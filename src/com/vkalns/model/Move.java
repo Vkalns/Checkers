@@ -20,6 +20,8 @@ public class Move
         targetPos = input[1];
         int startingPosNummeric[] = changeToNumbers(startingPos);
         this.startingPosNummeric = startingPosNummeric;
+        int targetPosNummeric[] = changeToNumbers(targetPos);
+        this.targetPosNummeric = targetPosNummeric;
     }
 
     //getters
@@ -38,14 +40,16 @@ public class Move
         return startingPosNummeric;
     }
 
+    public int[] getTargetPosNummeric() {
+        return targetPosNummeric;
+    }
+
     private int []changeToNumbers(String coordinates)
     {
         String toUpper = coordinates.toUpperCase();
 
         int []horizontalInNr={0,0};
         Character h = toUpper.charAt(0);
-        System.out.println(h);
-
         switch(h) {
             case 'A' :
                 horizontalInNr[0] = 1;
@@ -58,6 +62,8 @@ public class Move
                 break;
             case 'D' :
                 horizontalInNr[0] = 4;
+                //System.out.println(horizontalInNr[0]);
+                break;
             case 'E' :
                 horizontalInNr[0] = 5;
                 break;
