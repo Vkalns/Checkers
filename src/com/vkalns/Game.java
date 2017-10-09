@@ -20,6 +20,9 @@ public class Game
         movesTaken.push(new Move(prompter.askForMove(),board));
         System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
                 " to "+movesTaken.peek().getTargetPos());
+        System.out.println("Starting coordinates in nummeric: "
+                +movesTaken.peek().getStartingPosNummeric()[0]
+                +movesTaken.peek().getStartingPosNummeric()[1]);
     }
         //here all the methods will be called to play the game till the result
         //This method will be called in Main class
