@@ -1,5 +1,6 @@
 package com.vkalns.model;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Move
@@ -62,7 +63,6 @@ public class Move
                 break;
             case 'D' :
                 horizontalInNr[0] = 4;
-                //System.out.println(horizontalInNr[0]);
                 break;
             case 'E' :
                 horizontalInNr[0] = 5;
@@ -81,6 +81,7 @@ public class Move
                 horizontalInNr[0]=0;
         }
         horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1));
+        System.out.println(Arrays.toString(horizontalInNr));
         return horizontalInNr;
     }
 

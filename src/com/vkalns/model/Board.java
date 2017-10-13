@@ -42,5 +42,14 @@ public class Board
         }
     }
 
+    public void updateBoard(String playerColour,int[]startingCoordinates,int[]endCoordinates)
+    {
+        board[startingCoordinates[0]-1][startingCoordinates[1]-1]="*";
+
+        board[endCoordinates[0]-1][endCoordinates[1]-1]=playerColour;
+        drawBoard();
+
+    }
+
 
 }

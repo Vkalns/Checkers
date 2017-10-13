@@ -12,6 +12,7 @@ public class Game
     Stack<Move> movesTaken = new Stack<>();
     Stack<Move> movesUndo = new Stack<>();
     Board board = new Board();
+    String playerColour = "w";
     Prompter prompter = new Prompter();
 
     public void start()
@@ -20,7 +21,27 @@ public class Game
         movesTaken.push(new Move(prompter.askForMove(),board));
         System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
                 " to "+movesTaken.peek().getTargetPos());
-    
+
+
+        //draws an updated position of the board when basic move is made
+        board.updateBoard(playerColour,
+                            movesTaken.peek().getStartingPosNummeric(),
+                            movesTaken.peek().getTargetPosNummeric());
+
+        //while (prompter.askForMove()
+
+        movesTaken.push(new Move(prompter.askForMove(),board));
+        System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
+                " to "+movesTaken.peek().getTargetPos());
+
+
+        //draws an updated position of the board when basic move is made
+        board.updateBoard(playerColour,
+                movesTaken.peek().getStartingPosNummeric(),
+                movesTaken.peek().getTargetPosNummeric());
+
+
+
     }
         //here all the methods will be called to play the game till the result
         //This method will be called in Main class
