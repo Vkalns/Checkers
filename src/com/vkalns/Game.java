@@ -13,6 +13,7 @@ public class Game
     Stack<Move> movesUndo = new Stack<>();
     Board board = new Board();
     String playerColour = "w";
+    String aiColour = "b";
     Prompter prompter = new Prompter();
 
     public void start()
@@ -27,7 +28,6 @@ public class Game
         board.updateBoard(playerColour,
                             movesTaken.peek().getStartingPosNummeric(),
                             movesTaken.peek().getTargetPosNummeric());
-
         //while (prompter.askForMove()
 
         movesTaken.push(new Move(prompter.askForMove(),board));
@@ -42,10 +42,22 @@ public class Game
 
 
 
+
     }
         //here all the methods will be called to play the game till the result
         //This method will be called in Main class
 
+
+    public void displayMovesHistory(Stack<Move> movesTaken)
+    {
+        //TODO: Display all the move history
+//        System.out.println("List of moves made by player:");
+//        for (move : movesTaken)
+//        {
+//
+//        }
+
+    }
 
     public void undoMove()
     {
