@@ -29,12 +29,12 @@ public class Move
 
     public String getStartingPos()
     {
-        return startingPos;
+        return startingPos.toUpperCase();
     }
 
     public String getTargetPos()
     {
-        return targetPos;
+        return targetPos.toUpperCase();
     }
 
     public int[] getStartingPosNummeric() {
@@ -81,7 +81,6 @@ public class Move
                 horizontalInNr[0]=0;
         }
         horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1));
-        System.out.println(Arrays.toString(horizontalInNr));
         return horizontalInNr;
     }
 

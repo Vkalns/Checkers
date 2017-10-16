@@ -58,13 +58,20 @@ public class Board
     }
 
 
-    public void checkMyPieceCount()
-    {
+    public int checkPieceCount(String colour)
+    {//checks how many elements in Board array equals piece colour
         int count = 0;
-        for (String item[]:board)
+        for(int y=0;y<8;y++ )
         {
-            //TODO: cehcks pieces count on the board
+            for(int x=0;x<8;x++ )
+            {
+                if (board[y][x].equalsIgnoreCase(colour))
+                {
+                    count++;
+                }
+            }
         }
+        return count;
     }
 
 

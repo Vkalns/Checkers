@@ -22,7 +22,7 @@ public class Prompter
             askForMove();
         }
         String[] coordinates = playersInput.split(",");
-        if (coordinates.length==0)
+        if (coordinates.length==0 || coordinates[0].indexOf(" ")!=-1 || coordinates[1].indexOf(" ")!=-1)
         {
             System.out.println("Not  valid data was entered");
             askForMove();
