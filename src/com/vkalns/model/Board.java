@@ -58,4 +58,14 @@ public class Board
     }
 
 
+    public void checkMyPieceCount()
+    {
+        int count = 0;
+        for (String item[]:board)
+        {
+            //TODO: cehcks pieces count on the board
+        }
+    }
+
+
 }
