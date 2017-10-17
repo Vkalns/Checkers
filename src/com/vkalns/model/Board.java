@@ -42,13 +42,25 @@ public class Board
         }
     }
 
-    public void updateBoard(String playerColour,int[]startingCoordinates,int[]endCoordinates)
+    public void updateBoard(String playerColour,int[]startingCoordinates,int[]endCoordinates,boolean undo)
     {
-        board[startingCoordinates[1]-1][startingCoordinates[0]-1]="*";
+        if(undo==false)
+        {//if we moving players or AI piece we swap the array elements
+            board[startingCoordinates[1]-1][startingCoordinates[0]-1]="*";
 
-        board[endCoordinates[1]-1][endCoordinates[0]-1]=playerColour;
+            board[endCoordinates[1]-1][endCoordinates[0]-1]=playerColour;
 
-        drawBoard();
+            drawBoard();
+        }
+        else //if we undo the move we swap the elements from w/b back to *
+            {
+                board[startingCoordinates[1]-1][startingCoordinates[0]-1]=playerColour;
+
+                board[endCoordinates[1]-1][endCoordinates[0]-1]="*";
+                drawBoard();
+            }
+
+
 
 //        System.out.println(board[startingCoordinates[0]-1]
 //                                [startingCoordinates[1]-1]);

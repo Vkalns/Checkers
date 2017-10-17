@@ -85,11 +85,18 @@ public class Move
     }
 
 
-    public boolean hasFigureToMove(String startingPos)//temp? piece with starting coordinates?
+    public boolean hasFigureToMove(int[]pointOnBoard,String colour)//temp? piece with starting coordinates?
     {
-
-
-        return true;
+        pointOnBoard = getStartingPosNummeric();
+        //this checks if the board element's string array has w string in starting position
+        if (board.board[pointOnBoard[0]][pointOnBoard[1]].equalsIgnoreCase("w"))
+        {
+            return true;
+        }
+        else
+            {
+                return false;
+            }
     }
 
     public void undoMove(){}

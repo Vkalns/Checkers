@@ -5,6 +5,7 @@ import com.vkalns.model.Move;
 import com.vkalns.model.Prompter;
 
 import java.io.Console;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Game
@@ -15,19 +16,37 @@ public class Game
     String playerColour = "w";
     String aiColour = "b";
     Prompter prompter = new Prompter();
+    Scanner scanner = new Scanner(System.in);
+    String input = "";
 
     public void start()
     {
         board.drawBoard();//Draws a starting board
         while(board.checkPieceCount(playerColour)>0)//Keep playing while you have pieces on board
         {
-            movesTaken.push(new Move(prompter.askForMove(),board));//add new move
-            System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
-                    " to "+movesTaken.peek().getTargetPos());
-            //draws an updated position of the board when basic move is made
-            board.updateBoard(playerColour,
-                    movesTaken.peek().getStartingPosNummeric(),
-                    movesTaken.peek().getTargetPosNummeric());
+            System.out.println("Please enter your next move starting and ending coordinates separated by comma");
+            System.out.println("If you want to undo your last move please enter \"undo\"");
+            System.out.println("If you want to redo your last undo please type \"redo\"");
+            input = scanner.nextLine();
+            if (input.equalsIgnoreCase("undo"))
+            {
+                undoMove();
+            }
+            else if (input.equalsIgnoreCase("redo"))
+            {
+                redoMove();
+            }
+            else
+                {
+                    movesTaken.push(new Move(prompter.askForMove(input),board));//add new move
+                    System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
+                            " to "+movesTaken.peek().getTargetPos());
+                    //draws an updated position of the board when basic move is made
+                    board.updateBoard(playerColour,
+                            movesTaken.peek().getStartingPosNummeric(),
+                            movesTaken.peek().getTargetPosNummeric(),false);
+                }
+
 
             displayMovesHistory(movesTaken);
         }
@@ -58,7 +77,7 @@ public class Game
         {//takes move off and puts it in another undo move stack
             board.updateBoard(playerColour,
                     movesTaken.peek().getStartingPosNummeric(),
-                    movesTaken.peek().getTargetPosNummeric());
+                    movesTaken.peek().getTargetPosNummeric(),true);
             movesUndo.push(movesTaken.pop());
         }
         else
@@ -74,7 +93,7 @@ public class Game
         {//takes move off and puts it in another undo move stack
             board.updateBoard(playerColour,
                     movesUndo.peek().getStartingPosNummeric(),
-                    movesUndo.peek().getTargetPosNummeric());
+                    movesUndo.peek().getTargetPosNummeric(),false);
             movesTaken.push(movesUndo.pop());
         }
         else
