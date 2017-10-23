@@ -70,19 +70,4 @@ public class Prompter
         return coordinates;
     }
 
-//    public boolean doUndo(String input)
-//    {//this will check if player want's to undo a move
-//        boolean doUndo=false;
-//
-//        if(input.indexOf(',')!=-1)
-//        {
-//            String[] coordinates = input.split(",");
-//            if(coordinates[0].equals("*")&&coordinates[1].equals("*"))
-//            {
-//                doUndo=true;
-//                System.out.println("Undoing your latest move");
-//            }
-//        }
-//        return doUndo;
-//    }
 }

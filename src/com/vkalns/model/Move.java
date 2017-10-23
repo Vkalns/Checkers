@@ -13,6 +13,8 @@ public class Move
     String targetPos = "";
     int [] startingPosNummeric;
     int [] targetPosNummeric;
+    Player player;
+    boolean isValid;
     List<String> capturedPiecesPositions;
 
     public Move(String [] input,Board board)
@@ -25,7 +27,7 @@ public class Move
         this.startingPosNummeric = startingPosNummeric;
         int targetPosNummeric[] = changeToNumbers(targetPos);
         this.targetPosNummeric = targetPosNummeric;
-        Player player;
+
     }
 
     //getters
@@ -101,6 +103,8 @@ public class Move
                 return false;
             }
     }
+
+    public void advancedMove(){};
 
     public void CapturePiece(String coordinates)
     {//this takes off the opponents piece from the board at provided coordinate

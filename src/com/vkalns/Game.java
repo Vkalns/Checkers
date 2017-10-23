@@ -15,7 +15,7 @@ public class Game
     Stack<Move> movesUndo = new Stack<>();
     Board board = new Board();
     Player playerOne = new Player("human","w");
-    String aiColour = "b";
+    Player playerTwo = new Player("computer","b");
     Prompter prompter = new Prompter();
     Scanner scanner = new Scanner(System.in);
     String input = "";
@@ -104,6 +104,18 @@ public class Game
             {
                 System.out.println("No mo moves to redo");
             }
+    }
+
+    public boolean canMoveBeValid(Move move)
+    {
+        boolean isValid = false;
+//        if(move.hasFigureToMove(playerOne.getPieceColour())
+//                &&move.getTargetPosNummeric()[0]
+//
+//        {
+//
+//        }
+        return isValid;
     }
 
     public void end()
