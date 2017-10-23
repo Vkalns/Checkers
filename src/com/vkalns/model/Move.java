@@ -1,6 +1,7 @@
 package com.vkalns.model;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class Move
@@ -12,6 +13,7 @@ public class Move
     String targetPos = "";
     int [] startingPosNummeric;
     int [] targetPosNummeric;
+    List<String> capturedPiecesPositions;
 
     public Move(String [] input,Board board)
     {
@@ -97,6 +99,12 @@ public class Move
             {
                 return false;
             }
+    }
+
+    public void CapturePiece(String coordinates)
+    {//this takes off the opponents piece from the board at provided coordinate
+        int[] coordinate = changeToNumbers(coordinates);
+        board.board[coordinate[1]-1][coordinate[0]-1]="*";
     }
 
     public void undoMove(){}
