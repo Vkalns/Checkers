@@ -2,6 +2,7 @@ package com.vkalns;
 
 import com.vkalns.model.Board;
 import com.vkalns.model.Move;
+import com.vkalns.model.Player;
 import com.vkalns.model.Prompter;
 
 import java.io.Console;
@@ -13,7 +14,7 @@ public class Game
     Stack<Move> movesTaken = new Stack<>();
     Stack<Move> movesUndo = new Stack<>();
     Board board = new Board();
-    String playerColour = "w";
+    Player playerOne = new Player("human","w");
     String aiColour = "b";
     Prompter prompter = new Prompter();
     Scanner scanner = new Scanner(System.in);
@@ -22,7 +23,7 @@ public class Game
     public void startVsAi()
     {
         board.drawBoard();//Draws a starting board
-        while(board.checkPieceCount(playerColour)>0)//Keep playing while you have pieces on board
+        while(board.checkPieceCount(playerOne.getPieceColour())>0)//Keep playing while you have pieces on board
         {
             System.out.println("Please enter your next move starting and ending coordinates separated by comma");
             System.out.println("If you want to undo your last move please enter \"undo\"");
@@ -36,15 +37,24 @@ public class Game
             {
                 redoMove();
             }
+
             else
                 {
                     movesTaken.push(new Move(prompter.askForMove(input),board));//add new move
-                    System.out.println("Moving a piece from: "+movesTaken.peek().getStartingPos()+
-                            " to "+movesTaken.peek().getTargetPos());
-                    //draws an updated position of the board when basic move is made
-                    board.updateBoard(playerColour,
-                            movesTaken.peek().getStartingPosNummeric(),
-                            movesTaken.peek().getTargetPosNummeric(),false);
+
+                    if (!movesTaken.peek().hasFigureToMove(playerOne.getPieceColour()))
+                        //this checks if the starting coordinates provided has the piece on it
+                    {
+                        System.out.println("There is no piece on coordinates: "+movesTaken.peek().getStartingPos().toUpperCase());
+                        movesTaken.pop();//removes move from stack as it's not valid
+                    }
+                    else
+                        {
+                            System.out.println("Moving a piece from: " + movesTaken.peek().getStartingPos() +
+                                    " to " + movesTaken.peek().getTargetPos());
+                            //draws an updated position of the board when basic move is made
+                            board.updateBoard(movesTaken.peek(),playerOne.getPieceColour(),false,false);
+                        }
                 }
             displayMovesHistory(movesTaken);
         }
@@ -73,9 +83,7 @@ public class Game
         //TODO: remove last element from movesTaken Stack
         if(!movesTaken.isEmpty())
         {//takes move off and puts it in another undo move stack
-            board.updateBoard(playerColour,
-                    movesTaken.peek().getStartingPosNummeric(),
-                    movesTaken.peek().getTargetPosNummeric(),true);
+            board.updateBoard(movesTaken.peek(),playerOne.getPieceColour(),true,false);
             movesUndo.push(movesTaken.pop());
         }
         else
@@ -89,9 +97,7 @@ public class Game
         //TODO: remove last element from movesUndo Stack
         if(!movesUndo.isEmpty())
         {//takes move off and puts it in another undo move stack
-            board.updateBoard(playerColour,
-                    movesUndo.peek().getStartingPosNummeric(),
-                    movesUndo.peek().getTargetPosNummeric(),false);
+            board.updateBoard(movesTaken.peek(),playerOne.getPieceColour(),false,true);
             movesTaken.push(movesUndo.pop());
         }
         else

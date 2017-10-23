@@ -25,6 +25,8 @@ public class Prompter
             int gameChoice = scanner.nextInt();
             if (gameChoice==1)
             {
+                System.out.println("Player 1 will play with whites and player two will play with blacks");
+                //TODO if I have time implement a nice Choose name for players and choose colour
                 Game checkers = new Game();
             }
             else if (gameChoice ==2)
@@ -42,7 +44,7 @@ public class Prompter
         catch (Exception e)
         {
             System.out.println("Something went wrong. Please enter number 1,2 or 3");
-            return;
+
 
         }
 

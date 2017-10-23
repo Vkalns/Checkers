@@ -25,6 +25,7 @@ public class Move
         this.startingPosNummeric = startingPosNummeric;
         int targetPosNummeric[] = changeToNumbers(targetPos);
         this.targetPosNummeric = targetPosNummeric;
+        Player player;
     }
 
     //getters
@@ -87,11 +88,11 @@ public class Move
     }
 
 
-    public boolean hasFigureToMove(int[]pointOnBoard,String colour)//temp? piece with starting coordinates?
+    public boolean hasFigureToMove(String colour)//temp? piece with starting coordinates?
     {
-        pointOnBoard = getStartingPosNummeric();
+        int [] pointOnBoard = getStartingPosNummeric();
         //this checks if the board element's string array has w string in starting position
-        if (board.board[pointOnBoard[0]][pointOnBoard[1]].equalsIgnoreCase("w"))
+        if (board.board[pointOnBoard[0]][pointOnBoard[1]].equalsIgnoreCase(colour))
         {
             return true;
         }

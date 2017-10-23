@@ -42,33 +42,27 @@ public class Board
         }
     }
 
-    public void updateBoard(String playerColour,int[]startingCoordinates,int[]endCoordinates,boolean undo)
+    public void updateBoard(Move move, String colour,boolean undo, boolean redo)
+            //String playerColour,int[]startingCoordinates,int[]endCoordinates,boolean undo
     {
         if(undo==false)
         {//if we moving players or AI piece we swap the array elements
-            board[startingCoordinates[1]-1][startingCoordinates[0]-1]="*";
+            board[move.getStartingPosNummeric()[1]-1][move.getStartingPosNummeric()[0]-1]="*";
 
-            board[endCoordinates[1]-1][endCoordinates[0]-1]=playerColour;
+            board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]=colour;
+
+
 
             drawBoard();
         }
         else //if we undo the move we swap the elements from w/b back to *
             {
-                board[startingCoordinates[1]-1][startingCoordinates[0]-1]=playerColour;
+                board[move.getStartingPosNummeric()[1]-1][move.getStartingPosNummeric()[0]-1]=colour;
 
-                board[endCoordinates[1]-1][endCoordinates[0]-1]="*";
+                board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]="*";
                 drawBoard();
             }
-
-
-
-//        System.out.println(board[startingCoordinates[0]-1]
-//                                [startingCoordinates[1]-1]);
-//        System.out.println(board[endCoordinates[1]-1][endCoordinates[0]-1]);
-
-
     }
-
 
     public int checkPieceCount(String colour)
     {//checks how many elements in Board array equals piece colour
