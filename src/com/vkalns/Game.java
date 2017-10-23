@@ -19,7 +19,7 @@ public class Game
     Scanner scanner = new Scanner(System.in);
     String input = "";
 
-    public void start()
+    public void startVsAi()
     {
         board.drawBoard();//Draws a starting board
         while(board.checkPieceCount(playerColour)>0)//Keep playing while you have pieces on board
@@ -46,8 +46,6 @@ public class Game
                             movesTaken.peek().getStartingPosNummeric(),
                             movesTaken.peek().getTargetPosNummeric(),false);
                 }
-
-
             displayMovesHistory(movesTaken);
         }
     }
