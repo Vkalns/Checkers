@@ -1,5 +1,6 @@
 package com.vkalns.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
@@ -12,11 +13,12 @@ public class Move
     String startingPos = "";
     String targetPos = "";
     int [] startingPosNummeric;
-    int [] jumpPosition;
+    int[] capturePosition;
+    int [] jumpPosition = new int[2];
     int [] targetPosNummeric;
     Player player;
     boolean isValid;
-    List<String> capturedPiecesPositions;
+    ArrayList<Integer> capturedPiecesPositions;
 
     public Move(String [] input,Board board)
     {
@@ -91,7 +93,58 @@ public class Move
     }
 
 
-    public void advancedMove(){};
+    public void advancedMove(int[] startPosition,int[]targetPosition,String colour)
+    {//TODO create similar move but for king
+        if(colour.equals("w")&&targetPosition[1]==startPosition[1]+2)//if whites go ahead by two on y axis
+        {
+            if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
+            {
+                jumpPosition[0]=startPosition[0]+1;
+                jumpPosition[1]=startPosition[1]+1;
+                if(hasPieceToCapture(jumpPosition,colour))
+                {
+                    //capturedPiecesPositions.add(jumpPosition[])
+                    //board.board[jumpPosition[0]][jumpPosition[1]]="*";
+                    capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
+                    //TODO this should be in update board  method
+                    //capturing piece between starting and target position
+
+                }
+
+            }
+            else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
+            {
+                jumpPosition[0]=startPosition[0]-1;
+                jumpPosition[1]=startPosition[1]+1;
+                if(hasPieceToCapture(jumpPosition,colour))
+                {
+                    //capturedPiecesPositions.add(jumpPosition[])
+                    capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
+                    //TODO this should be in update board  method
+                    //capturing piece between starting and target position
+
+                }
+            }
+        }
+
+
+    }
+
+    public boolean hasPieceToCapture(int[]coordinates,String colour)
+    {//this checks if in given coordinate has opponent's piece
+        boolean hasPiece = false;
+        if (colour.equalsIgnoreCase("w") && board.board[coordinates[0]-1][coordinates[1]-1].equalsIgnoreCase("b"))
+        {
+            hasPiece = true;
+        }
+        if (colour.equalsIgnoreCase("b") && board.board[coordinates[0]-1][coordinates[1]-1].equalsIgnoreCase("w"))
+        {
+            hasPiece = true;
+        }
+        return hasPiece;
+    }
 
     public void CapturePiece(String coordinates)
     {//this takes off the opponents piece from the board at provided coordinate

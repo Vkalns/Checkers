@@ -9,9 +9,9 @@ public class Board
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
             {"w"," ","w"," ","w"," ","w"," "},
-            {" ","*"," ","*"," ","*"," ","*"},
+            {" ","*"," ","b"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","b"," ","b"},
+            {" ","b"," ","b"," ","*"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
 
@@ -50,6 +50,14 @@ public class Board
 
             board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]=colour;
 
+            if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
+            {
+                for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
+                {
+                    board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
+                }
+            }
+
 
 
             drawBoard();
@@ -59,6 +67,14 @@ public class Board
                 board[move.getStartingPosNummeric()[1]-1][move.getStartingPosNummeric()[0]-1]=colour;
 
                 board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]="*";
+
+                if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
+                {
+                    for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
+                    {
+                        board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
+                    }
+                }
                 drawBoard();
             }
     }

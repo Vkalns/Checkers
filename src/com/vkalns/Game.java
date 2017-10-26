@@ -1,14 +1,12 @@
 package com.vkalns;
 
 import com.vkalns.model.Board;
-import com.vkalns.model.Move;
 import com.vkalns.model.Player;
 import com.vkalns.model.Prompter;
+import com.vkalns.model.Move;
 
-import java.io.Console;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class Game
 {
@@ -19,6 +17,7 @@ public class Game
     Prompter prompter = new Prompter(board);
     Scanner scanner = new Scanner(System.in);
     String input = "";
+
 
     public void startVsAi(String playerName)
     {
@@ -47,6 +46,13 @@ public class Game
                     human.movesTaken.push(new Move(coordinates,board));//add new move
                     System.out.println("Moving a piece from: " + human.movesTaken.peek().getStartingPos() +
                                     " to " + human.movesTaken.peek().getTargetPos());
+                    System.out.println(Arrays.toString(human.movesTaken.peek().getStartingPosNummeric()));
+                    System.out.println(Arrays.toString(human.movesTaken.peek().getTargetPosNummeric()));
+                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
+                    {
+                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
+                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
+                    }
                     //draws an updated position of the board when basic move is made
                     board.updateBoard(human.movesTaken.peek(),human.getPieceColour(),false,false);
                 }
