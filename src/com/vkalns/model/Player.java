@@ -1,14 +1,23 @@
 package com.vkalns.model;
 
+import java.util.Stack;
+
+/**
+ * Player class will keep all the moves done by player
+ */
 public class Player
 {
     String name;
     String pieceColour;
-    String piece;
-
+    public Stack<Move> movesTaken = new Stack<>();
+    public Stack<Move> movesUndo = new Stack<>();
     public Player(String name, String pieceColour)
     {
         this.name = name;
+        this.pieceColour = pieceColour;
+    }
+
+    public Player(String pieceColour) {
         this.pieceColour = pieceColour;
     }
 
@@ -24,7 +33,8 @@ public class Player
         return pieceColour;
     }
 
-    public void setPieceColour(String pieceColour) {
+    public void setPieceColour(String pieceColour)
+    {
         this.pieceColour = pieceColour;
     }
 }

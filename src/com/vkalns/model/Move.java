@@ -12,6 +12,7 @@ public class Move
     String startingPos = "";
     String targetPos = "";
     int [] startingPosNummeric;
+    int [] jumpPosition;
     int [] targetPosNummeric;
     Player player;
     boolean isValid;
@@ -90,20 +91,6 @@ public class Move
     }
 
 
-    public boolean hasFigureToMove(String colour)//temp? piece with starting coordinates?
-    {
-        int [] pointOnBoard = getStartingPosNummeric();
-        //this checks if the board element's string array has w string in starting position
-        if (board.board[pointOnBoard[0]][pointOnBoard[1]].equalsIgnoreCase(colour))
-        {
-            return true;
-        }
-        else
-            {
-                return false;
-            }
-    }
-
     public void advancedMove(){};
 
     public void CapturePiece(String coordinates)
@@ -111,7 +98,5 @@ public class Move
         int[] coordinate = changeToNumbers(coordinates);
         board.board[coordinate[1]-1][coordinate[0]-1]="*";
     }
-
-    public void undoMove(){}
 
 }
