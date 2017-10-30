@@ -95,5 +95,22 @@ public class Board
         return count;
     }
 
+    public int[]checkForCapture(String colour)
+    {
+        ArrayList<Integer> pieceCoordinates= new ArrayList<Integer>();
+        for(int y=0;y<8;y++ )
+        {
+            for(int x=0;x<8;x++ )
+            {
+                if (board[y][x].equalsIgnoreCase(colour))
+                {
+                    if ()
+                }
+            }
+        }
+
+
+    }
+
 
 }

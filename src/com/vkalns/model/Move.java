@@ -18,7 +18,7 @@ public class Move
     int [] targetPosNummeric;
     Player player;
     boolean isValid;
-    ArrayList<Integer> capturedPiecesPositions;
+    ArrayList<Integer> capturedPiecesPositions = new ArrayList<Integer>();
 
     public Move(String [] input,Board board)
     {
@@ -105,6 +105,7 @@ public class Move
                 {
                     //capturedPiecesPositions.add(jumpPosition[])
                     //board.board[jumpPosition[0]][jumpPosition[1]]="*";
+
                     capturedPiecesPositions.add(jumpPosition[0]);
                     capturedPiecesPositions.add(jumpPosition[1]);
                     //TODO this should be in update board  method

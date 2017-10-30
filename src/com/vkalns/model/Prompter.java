@@ -69,7 +69,7 @@ public class Prompter
         catch (Exception e)
         {
             System.out.println("Something went wrong. Please enter number 1,2 or 3");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
 
 
         }
