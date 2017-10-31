@@ -2,6 +2,7 @@ package com.vkalns.model;
 
 import com.vkalns.Game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -16,15 +17,6 @@ public class Prompter
     String colour1 = "w";
     String colour2 = "b";
     Scanner scanner = new Scanner(System.in);
-
-//    public Player getPlayer() {
-//        return player;
-//    }
-//
-//    public void setPlayer(String colour1) {
-//        this.player = player;
-//    }
-
 
     public Prompter()
     {}
@@ -106,6 +98,36 @@ public class Prompter
         return coordinates;
     }
 
+    public String[] askForCaptureMove(ArrayList<Integer> pieceCoordinates)
+    {
+        if(pieceCoordinates.size()<3)
+        {
+            String [] moveCoordinates= new String[];
+            String []startingCoordinates=changeToLetters(new int[]{pieceCoordinates.get(0),pieceCoordinates.get(1)});
+            //getting string representation of point on board which has piece which needs to do capture move
+
+            System.out.println("You must capture opponents piece in "+startingCoordinates[0]+startingCoordinates[1]);
+            System.out.println("Please enter your move's ending coordinates");
+            String captureEndCoordinates = scanner.nextLine();
+            if (captureEndCoordinates.trim().isEmpty() || playersInput.indexOf(',')==-1 || playersInput.indexOf(',')!=2)
+            {
+                System.out.println("Not valid data was entered");
+                System.out.println("Please enter your next move starting and ending coordinates separated by comma");
+                askForCaptureMove(board.checkForCapture(player.getPieceColour()));
+            }
+            moveCoordinates = {startingCoordinates[0],startingCoordinates[1]};
+            if(!isCoordinatesValid(coordinates))
+            {
+                System.out.println("Please enter your next move starting and ending coordinates separated by comma");
+                askForCaptureMove(board.checkForCapture(player.getPieceColour()));
+        }
+
+        }
+
+        return coordinates;
+
+    }
+
     private int []changeToNumbers(String coordinates)
     {
         String toUpper = coordinates.toUpperCase();
@@ -143,6 +165,44 @@ public class Prompter
         }
         horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1));
         return horizontalInNr;
+    }
+
+    private String []changeToLetters(int[] coordinates)
+    {
+        //String coordiantes = coordinates.toUpperCase();
+
+        String []horizontalInLetter={"",""};
+        switch(coordinates[1]) {
+            case 1:
+                horizontalInLetter[0] = "A";
+                break;
+            case 2 :
+                horizontalInLetter[0] = "B";
+                break;
+            case 3 :
+                horizontalInLetter[0] = "C";
+                break;
+            case 4 :
+                horizontalInLetter[0] = "D";
+                break;
+            case 5 :
+                horizontalInLetter[0] = "E";
+                break;
+            case 6 :
+                horizontalInLetter[0] = "F";
+                break;
+            case 7 :
+                horizontalInLetter[0] = "G";
+                break;
+            case 8 :
+                horizontalInLetter[0] = "H";
+                break;
+            default :
+                System.out.println("Invalid coordinates");
+                horizontalInLetter[0]="0";
+        }
+        horizontalInLetter[1] = Integer.toString(coordinates[0]);
+        return horizontalInLetter;
     }
 
     public boolean isCoordinatesValid(String []coordinates)

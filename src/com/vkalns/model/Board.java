@@ -8,10 +8,10 @@ public class Board
     public String [][] board  = {
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
-            {"w"," ","*"," ","w"," ","w"," "},
-            {" ","w"," ","*"," ","*"," ","*"},
-            {"b"," ","*"," ","*"," ","*"," "},
-            {" ","*"," ","b"," ","b"," ","b"},
+            {"w"," ","w"," ","w"," ","*"," "},
+            {" ","*"," ","*"," ","*"," ","b"},
+            {"b"," ","*"," ","*"," ","w"," "},
+            {" ","*"," ","b"," ","*"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
 
@@ -98,7 +98,7 @@ public class Board
     public boolean checkRightUpwards(int y, int x)
     {
         boolean inRange=true;
-        if(y-2>0 || x+2>7)
+        if(y-2<0 || x+2>7)
         {
             inRange=false;
         }
@@ -107,7 +107,7 @@ public class Board
     public boolean checkLeftUpwards(int y, int x)
     {
         boolean inRange=true;
-        if(y-2>0 || x-2<0)
+        if(y-2<0 || x-2<0)
         {
             inRange=false;
         }
@@ -125,7 +125,7 @@ public class Board
     public boolean checkLeftDownwards(int y, int x)
     {
         boolean inRange=true;
-        if(y+2>7 || x-2>0)
+        if(y+2>7 || x-2<0)
         {
             inRange=false;
         }
@@ -148,9 +148,9 @@ public class Board
 
         if(checkRightUpwards(y,x))
         {
-            if(colour.equalsIgnoreCase("b")&& board[y-1][x-1].equalsIgnoreCase("w"))
+            if(colour.equalsIgnoreCase("b")&& board[y-1][x+1].equalsIgnoreCase("w"))
             {
-                if(colour.equalsIgnoreCase("b")&& board[y-2][x-2].equalsIgnoreCase("*"))
+                if(colour.equalsIgnoreCase("b")&& board[y-2][x+2].equalsIgnoreCase("*"))
                 {
                     hasCapture=true;//has valid capture
                 }
@@ -177,9 +177,9 @@ public class Board
 
         if(checkLeftDownwards(y,x))//while target coordinates are in range
         {
-            if(colour.equals("b")&& board[y-1][x+1].equalsIgnoreCase("w"))//if there is piece to capture
+            if(colour.equals("b")&& board[y-1][x-1].equalsIgnoreCase("w"))//if there is piece to capture
             {
-                if(colour.equals("b")&& board[y-2][x+2].equalsIgnoreCase("*"))//and there is space after it
+                if(colour.equals("b")&& board[y-2][x-2].equalsIgnoreCase("*"))//and there is space after it
                 {
                     hasCapture=true;//has valid capture
                 }

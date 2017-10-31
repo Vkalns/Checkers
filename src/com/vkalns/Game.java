@@ -42,9 +42,23 @@ public class Game
                 redoMove(human);
             }
 
-            else if(2>3)
-            {
-                //TODO: here I need to add checking for captures
+            else if(!board.checkForCapture(human.getPieceColour()).isEmpty())
+            {//if capture situation happens
+//                int[] captureStartPos = new int[board.checkForCapture(human.getPieceColour()).size()];
+//                int index=0;
+//                for (int i : board.checkForCapture(human.getPieceColour()))
+//                {
+//                    captureStartPos[index]=i;
+//                    index++;
+//                }
+
+                String[] captureCoordinates = prompter.askForCaptureMove(board.checkForCapture(human.getPieceColour()));//we ask for valid coordinates
+                human.movesTaken.push(new Move(captureCoordinates,board));//when we get them we create the move and update screen
+                System.out.println("Moving a piece from: " + human.movesTaken.peek().getStartingPos() +
+                        " to " + human.movesTaken.peek().getTargetPos());
+
+                //TODO: need to get capture figure update method
+                board.updateBoard(human.movesTaken.peek(),human.getPieceColour(),false,false);
             }
 
             else
@@ -55,8 +69,8 @@ public class Game
                                     " to " + human.movesTaken.peek().getTargetPos());
                     System.out.println(Arrays.toString(human.movesTaken.peek().getStartingPosNummeric()));
                     System.out.println(Arrays.toString(human.movesTaken.peek().getTargetPosNummeric()));
-                    System.out.println(board.checkRightCapture(2,2,"w"));
-                    System.out.println(board.checkLeftCapture(2,2,"w"));
+                    //System.out.println(board.checkRightCapture(2,2,"w"));
+                    //System.out.println(board.checkLeftCapture(2,2,"w"));
 //                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
 //                    {
 //                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
