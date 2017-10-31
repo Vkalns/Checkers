@@ -9,9 +9,9 @@ public class Board
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
             {"w"," ","w"," ","w"," ","w"," "},
-            {" ","*"," ","b"," ","*"," ","*"},
+            {" ","*"," ","*"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","*"," ","b"},
+            {" ","b"," ","b"," ","b"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
 
@@ -95,20 +95,109 @@ public class Board
         return count;
     }
 
-    public int[]checkForCapture(String colour)
+    public boolean checkRightUpwards(int y, int x)
     {
-        ArrayList<Integer> pieceCoordinates= new ArrayList<Integer>();
-        for(int y=0;y<8;y++ )
+        boolean inRange=true;
+        if(y-2>0 || x+2>7)
         {
-            for(int x=0;x<8;x++ )
+            inRange=false;
+        }
+        return inRange;
+    }
+    public boolean checkLeftUpwards(int y, int x)
+    {
+        boolean inRange=true;
+        if(y-2>0 || x-2<0)
+        {
+            inRange=false;
+        }
+        return inRange;
+    }
+    public boolean checkRightDownwards(int y, int x)
+    {
+        boolean inRange=true;
+        if(y+2>7 || x+2>7)
+        {
+            inRange=false;
+        }
+        return inRange;
+    }
+    public boolean checkLeftDownwards(int y, int x)
+    {
+        boolean inRange=true;
+        if(y+2>7 || x-2>0)
+        {
+            inRange=false;
+        }
+        return inRange;
+    }
+
+    public boolean checkRightCapture(int y, int x,String colour)
+    {
+        boolean hasCapture = false;
+        if(colour.equalsIgnoreCase("w")&& board[y+1][x+1].equalsIgnoreCase("b"))
+        {
+            if(colour.equalsIgnoreCase("w")&& board[y+2][x+2].equalsIgnoreCase("*"))
             {
-                if (board[y][x].equalsIgnoreCase(colour))
-                {
-                    if ()
-                }
+                hasCapture = true;//has valid capture
             }
         }
+        if(colour.equalsIgnoreCase("b")&& board[y-1][x-1].equalsIgnoreCase("w"))
+        {
+            if(colour.equalsIgnoreCase("b")&& board[y-2][x-2].equalsIgnoreCase("*"))
+            {
+                hasCapture=true;//has valid capture
+            }
+        }
+        return hasCapture;
 
+    }
+
+    public boolean checkLeftCapture(int y, int x,String colour)
+    {
+        boolean hasCapture =false;
+
+        if(colour.equalsIgnoreCase("w")&& board[y+1][x-1].equalsIgnoreCase("b"))
+        {
+            if(colour.equalsIgnoreCase("w")&& board[y+2][x-2].equalsIgnoreCase("*"))
+            {
+                hasCapture=true;//has valid capture
+            }
+        }
+        if(colour.equalsIgnoreCase("b")&& board[y-1][x+1].equalsIgnoreCase("w"))
+        {
+            if(colour.equalsIgnoreCase("b")&& board[y-2][x+2].equalsIgnoreCase("*"))
+            {
+                hasCapture=true;//has valid capture
+            }
+        }
+        return hasCapture;
+
+    }
+
+
+    public ArrayList<Integer> checkForCapture(String colour)
+    {
+        ArrayList<Integer> piecesWhichCanCapture= new ArrayList<Integer>();
+//        if (colour.equalsIgnoreCase("w"))//checking whites
+//        {
+            for(int y=1;y<7;y++ )
+            //I check for pieces on board which capture range is not outside of board
+            {
+                for(int x=1;x<7;x++ )
+                {
+                    if (board[y][x].equalsIgnoreCase(colour))
+                    {
+                        if(checkRightCapture(y,x,colour)||checkLeftCapture(y,x,colour))
+                        {
+                            piecesWhichCanCapture.add(y+1);
+                            piecesWhichCanCapture.add(x+1);
+                        }
+                    }
+                }
+            }
+//        }
+        return piecesWhichCanCapture;
 
     }
 

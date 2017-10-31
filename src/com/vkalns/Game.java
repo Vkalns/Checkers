@@ -27,6 +27,7 @@ public class Game
         Player computer = new Player("b");
         while(board.checkPieceCount(human.getPieceColour())>0)//Keep playing while you have pieces on board
         {
+            System.out.println(board.checkForCapture("b"));
             System.out.println("Please enter your next move starting and ending coordinates separated by comma");
             System.out.println("If you want to undo your last move please enter \"undo\"");
             System.out.println("If you want to redo your last undo please type \"redo\"");
@@ -40,6 +41,11 @@ public class Game
                 redoMove(human);
             }
 
+            else if(2>3)
+            {
+                //TODO: here I need to add checking for captures
+            }
+
             else
                 {
                     String [] coordinates = prompter.askForMove(input);//ask for move coordinates and validate them
@@ -48,12 +54,14 @@ public class Game
                                     " to " + human.movesTaken.peek().getTargetPos());
                     System.out.println(Arrays.toString(human.movesTaken.peek().getStartingPosNummeric()));
                     System.out.println(Arrays.toString(human.movesTaken.peek().getTargetPosNummeric()));
-                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
-                    {
-                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
-                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
-                    }
-                    //draws an updated position of the board when basic move is made
+                    System.out.println(board.checkRightCapture(2,2,"w"));
+                    System.out.println(board.checkLeftCapture(2,2,"w"));
+//                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
+//                    {
+//                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
+//                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
+//                    }
+//                    //draws an updated position of the board when basic move is made
                     board.updateBoard(human.movesTaken.peek(),human.getPieceColour(),false,false);
                 }
             displayMovesHistory(human);
