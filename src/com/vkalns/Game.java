@@ -28,6 +28,7 @@ public class Game
         while(board.checkPieceCount(human.getPieceColour())>0)//Keep playing while you have pieces on board
         {
             System.out.println(board.checkForCapture("b"));
+
             System.out.println("Please enter your next move starting and ending coordinates separated by comma");
             System.out.println("If you want to undo your last move please enter \"undo\"");
             System.out.println("If you want to redo your last undo please type \"redo\"");

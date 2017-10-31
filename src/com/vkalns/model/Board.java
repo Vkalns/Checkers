@@ -8,10 +8,10 @@ public class Board
     public String [][] board  = {
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
-            {"w"," ","w"," ","w"," ","w"," "},
-            {" ","*"," ","*"," ","*"," ","*"},
-            {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","b"," ","b"},
+            {"w"," ","*"," ","w"," ","w"," "},
+            {" ","w"," ","*"," ","*"," ","*"},
+            {"b"," ","*"," ","*"," ","*"," "},
+            {" ","*"," ","b"," ","b"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
 
@@ -135,20 +135,28 @@ public class Board
     public boolean checkRightCapture(int y, int x,String colour)
     {
         boolean hasCapture = false;
-        if(colour.equalsIgnoreCase("w")&& board[y+1][x+1].equalsIgnoreCase("b"))
+        if(checkRightDownwards(y,x))
         {
-            if(colour.equalsIgnoreCase("w")&& board[y+2][x+2].equalsIgnoreCase("*"))
+            if(colour.equalsIgnoreCase("w")&& board[y+1][x+1].equalsIgnoreCase("b"))
             {
-                hasCapture = true;//has valid capture
+                if(colour.equalsIgnoreCase("w")&& board[y+2][x+2].equalsIgnoreCase("*"))
+                {
+                    hasCapture = true;//has valid capture
+                }
             }
         }
-        if(colour.equalsIgnoreCase("b")&& board[y-1][x-1].equalsIgnoreCase("w"))
+
+        if(checkRightUpwards(y,x))
         {
-            if(colour.equalsIgnoreCase("b")&& board[y-2][x-2].equalsIgnoreCase("*"))
+            if(colour.equalsIgnoreCase("b")&& board[y-1][x-1].equalsIgnoreCase("w"))
             {
-                hasCapture=true;//has valid capture
+                if(colour.equalsIgnoreCase("b")&& board[y-2][x-2].equalsIgnoreCase("*"))
+                {
+                    hasCapture=true;//has valid capture
+                }
             }
         }
+
         return hasCapture;
 
     }
@@ -156,21 +164,28 @@ public class Board
     public boolean checkLeftCapture(int y, int x,String colour)
     {
         boolean hasCapture =false;
+        if(checkLeftUpwards(y,x))//while target coordinates are in range
+        {
+            if(colour.equals("w")&& board[y+1][x-1].equalsIgnoreCase("b"))//if there is piece to capture
+            {
+                if(colour.equals("w")&& board[y+2][x-2].equalsIgnoreCase("*"))//and there is space after it
+                {
+                    hasCapture=true;//has valid capture
+                }
+            }
+        }
 
-        if(colour.equalsIgnoreCase("w")&& board[y+1][x-1].equalsIgnoreCase("b"))
+        if(checkLeftDownwards(y,x))//while target coordinates are in range
         {
-            if(colour.equalsIgnoreCase("w")&& board[y+2][x-2].equalsIgnoreCase("*"))
+            if(colour.equals("b")&& board[y-1][x+1].equalsIgnoreCase("w"))//if there is piece to capture
             {
-                hasCapture=true;//has valid capture
+                if(colour.equals("b")&& board[y-2][x+2].equalsIgnoreCase("*"))//and there is space after it
+                {
+                    hasCapture=true;//has valid capture
+                }
             }
         }
-        if(colour.equalsIgnoreCase("b")&& board[y-1][x+1].equalsIgnoreCase("w"))
-        {
-            if(colour.equalsIgnoreCase("b")&& board[y-2][x+2].equalsIgnoreCase("*"))
-            {
-                hasCapture=true;//has valid capture
-            }
-        }
+
         return hasCapture;
 
     }
@@ -181,10 +196,10 @@ public class Board
         ArrayList<Integer> piecesWhichCanCapture= new ArrayList<Integer>();
 //        if (colour.equalsIgnoreCase("w"))//checking whites
 //        {
-            for(int y=1;y<7;y++ )
+            for(int y=0;y<8;y++ )
             //I check for pieces on board which capture range is not outside of board
             {
-                for(int x=1;x<7;x++ )
+                for(int x=0;x<8;x++ )
                 {
                     if (board[y][x].equalsIgnoreCase(colour))
                     {
