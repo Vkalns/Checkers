@@ -8,12 +8,13 @@ public class Board
     public String [][] board  = {
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
-            {"w"," ","w"," ","w"," ","*"," "},
-            {" ","*"," ","*"," ","*"," ","b"},
-            {"b"," ","*"," ","*"," ","w"," "},
-            {" ","*"," ","b"," ","*"," ","b"},
+            {"*"," ","w"," ","w"," ","w"," "},
+            {" ","w"," ","*"," ","*"," ","*"},
+            {"*"," ","b"," ","*"," ","*"," "},
+            {" ","b"," ","*"," ","b"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
+    //public ArrayList<Integer>
 
 
 
@@ -50,16 +51,15 @@ public class Board
 
             board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]=colour;
 
+
             if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
             {
+                System.out.println(move.capturedPiecesPositions);
                 for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
                 {
                     board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
                 }
             }
-
-
-
             drawBoard();
         }
         else //if we undo the move we swap the elements from w/b back to *
@@ -205,8 +205,8 @@ public class Board
                     {
                         if(checkRightCapture(y,x,colour)||checkLeftCapture(y,x,colour))
                         {
-                            piecesWhichCanCapture.add(y+1);
                             piecesWhichCanCapture.add(x+1);
+                            piecesWhichCanCapture.add(y+1);
                         }
                     }
                 }

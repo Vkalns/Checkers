@@ -30,7 +30,19 @@ public class Move
         this.startingPosNummeric = startingPosNummeric;
         int targetPosNummeric[] = changeToNumbers(targetPos);
         this.targetPosNummeric = targetPosNummeric;
+    }
 
+    public Move(String[] input,ArrayList<Integer> capturedPiecesPositions,Board board)
+    {
+        this.board = board;
+        this.input = input;
+        this.capturedPiecesPositions = capturedPiecesPositions;
+        startingPos = input[0];
+        targetPos = input[1];
+        int startingPosNummeric[] = changeToNumbers(startingPos);
+        this.startingPosNummeric = startingPosNummeric;
+        int targetPosNummeric[] = changeToNumbers(targetPos);
+        this.targetPosNummeric = targetPosNummeric;
     }
 
     //getters
@@ -110,9 +122,7 @@ public class Move
                     capturedPiecesPositions.add(jumpPosition[1]);
                     //TODO this should be in update board  method
                     //capturing piece between starting and target position
-
                 }
-
             }
             else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
             {
@@ -140,17 +150,17 @@ public class Move
         {
             hasPiece = true;
         }
-        if (colour.equalsIgnoreCase("b") && board.board[coordinates[0]-1][coordinates[1]-1].equalsIgnoreCase("w"))
+        if (colour.equalsIgnoreCase("b") && board.board[coordinates[0]][coordinates[1]].equalsIgnoreCase("w"))
         {
             hasPiece = true;
         }
         return hasPiece;
     }
 
-    public void CapturePiece(String coordinates)
-    {//this takes off the opponents piece from the board at provided coordinate
-        int[] coordinate = changeToNumbers(coordinates);
-        board.board[coordinate[1]-1][coordinate[0]-1]="*";
-    }
+//    public void CapturePiece(String coordinates)
+//    {//this takes off the opponents piece from the board at provided coordinate
+//        int[] coordinate = changeToNumbers(coordinates);
+//        board.board[coordinate[1]-1][coordinate[0]-1]="*";
+//    }
 
 }
