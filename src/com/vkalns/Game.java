@@ -85,6 +85,11 @@ public class Game
         }
     }
 
+    public void startVsPlayer(String player1,String player2)
+    {
+        board.drawBoard();
+    }
+
 
 
 

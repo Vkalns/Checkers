@@ -39,9 +39,19 @@ public class Prompter
             int gameChoice = scanner.nextInt();
             if (gameChoice==1)
             {
-                System.out.println("Player 1 will play with whites and player two will play with blacks");
+                System.out.println("Player 1 will play with whites and player 2 will play with blacks");
                 //TODO if I have time implement a nice Choose name for players and choose colour
                 Game checkers = new Game();
+                System.out.println("Player 1 please enter your name: ");
+                scanner.nextLine();
+                String playerOne = scanner.nextLine();
+                System.out.println(playerOne+ " you are playing with white pieces");
+                System.out.println("Player 2 please enter your name: ");
+                scanner.nextLine();
+                String playerTwo = scanner.nextLine();
+                System.out.println(playerOne+ " you are playing with black pieces");
+                checkers.startVsPlayer(playerOne,playerTwo);
+
             }
             else if (gameChoice ==2)
             {
