@@ -73,34 +73,35 @@ public class Move
         Character h = toUpper.charAt(0);
         switch(h) {
             case 'A' :
-                horizontalInNr[0] = 1;
+                horizontalInNr[1] = 1;
                 break;
             case 'B' :
-                horizontalInNr[0] = 2;
+                horizontalInNr[1] = 2;
                 break;
             case 'C' :
-                horizontalInNr[0] = 3;
+                horizontalInNr[1] = 3;
                 break;
             case 'D' :
-                horizontalInNr[0] = 4;
+                horizontalInNr[1] = 4;
                 break;
             case 'E' :
-                horizontalInNr[0] = 5;
+                horizontalInNr[1] = 5;
                 break;
             case 'F' :
-                horizontalInNr[0] = 6;
+                horizontalInNr[1] = 6;
                 break;
             case 'G' :
-                horizontalInNr[0] = 7;
+                horizontalInNr[1] = 7;
                 break;
             case 'H' :
-                horizontalInNr[0] = 8;
+                horizontalInNr[1] = 8;
                 break;
             default :
                 System.out.println("Invalid coordinates");
-                horizontalInNr[0]=0;
+                horizontalInNr[1]=0;
         }
-        horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1));
+        horizontalInNr[1]--;
+        horizontalInNr[0] = Character.getNumericValue(coordinates.charAt(1))-1;
         return horizontalInNr;
     }
 
@@ -131,8 +132,8 @@ public class Move
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
                     //capturedPiecesPositions.add(jumpPosition[])
-                    capturedPiecesPositions.add(jumpPosition[0]);
-                    capturedPiecesPositions.add(jumpPosition[1]);
+                    capturedPiecesPositions.add(jumpPosition[0]-1);
+                    capturedPiecesPositions.add(jumpPosition[1]-1);
                     //TODO this should be in update board  method
                     //capturing piece between starting and target position
 
@@ -146,7 +147,9 @@ public class Move
     public boolean hasPieceToCapture(int[]coordinates,String colour)
     {//this checks if in given coordinate has opponent's piece
         boolean hasPiece = false;
-        if (colour.equalsIgnoreCase("w") && board.board[coordinates[0]-1][coordinates[1]-1].equalsIgnoreCase("b"))
+        System.out.println(board.board[coordinates[0]][coordinates[1]]);
+        System.out.println(board.board[coordinates[0]-1][coordinates[1]-1]);
+        if (colour.equalsIgnoreCase("w") && (board.board[coordinates[0]][coordinates[1]].equalsIgnoreCase("b")))
         {
             hasPiece = true;
         }

@@ -8,10 +8,10 @@ public class Board
     public String [][] board  = {
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
-            {"*"," ","w"," ","w"," ","w"," "},
-            {" ","w"," ","*"," ","*"," ","*"},
-            {"*"," ","b"," ","*"," ","*"," "},
-            {" ","b"," ","*"," ","b"," ","b"},
+            {"w"," ","w"," ","w"," ","w"," "},
+            {" ","*"," ","*"," ","*"," ","*"},
+            {"*"," ","*"," ","*"," ","*"," "},
+            {" ","b"," ","b"," ","b"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
     //public ArrayList<Integer>
@@ -47,14 +47,14 @@ public class Board
     {
         if(undo==false)
         {//if we moving players or AI piece we swap the array elements
-            board[move.getStartingPosNummeric()[1]-1][move.getStartingPosNummeric()[0]-1]="*";
+            board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]="*";
 
-            board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]=colour;
+            board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=colour;
 
 
             if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
             {
-                System.out.println(move.capturedPiecesPositions);
+                //System.out.println(move.capturedPiecesPositions);
                 for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
                 {
                     board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
@@ -164,7 +164,7 @@ public class Board
     public boolean checkLeftCapture(int y, int x,String colour)
     {
         boolean hasCapture =false;
-        if(checkLeftUpwards(y,x))//while target coordinates are in range
+        if(checkLeftDownwards(y,x))//while target coordinates are in range
         {
             if(colour.equals("w")&& board[y+1][x-1].equalsIgnoreCase("b"))//if there is piece to capture
             {
@@ -175,7 +175,7 @@ public class Board
             }
         }
 
-        if(checkLeftDownwards(y,x))//while target coordinates are in range
+        if(checkLeftUpwards(y,x))//while target coordinates are in range
         {
             if(colour.equals("b")&& board[y-1][x-1].equalsIgnoreCase("w"))//if there is piece to capture
             {

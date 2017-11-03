@@ -30,7 +30,7 @@ public class Game
             System.out.println(board.checkForCapture("w"));
             if(!board.checkForCapture(human.getPieceColour()).isEmpty())
             {
-                String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(human.getPieceColour()));//we ask for valid coordinates
+                String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(human.getPieceColour()),human);//we ask for valid coordinates
 
                 human.movesTaken.push(new Move(captureMoveCoordinates,board));//when we get them we create the move and update screen
                 System.out.println("Moving a piece from: " + human.movesTaken.peek().getStartingPos() +
@@ -60,7 +60,7 @@ public class Game
                 }
                 else
                 {
-                    String [] coordinates = prompter.askForMove(input);//ask for move coordinates and validate them
+                    String [] coordinates = prompter.askForMove(input,human);//ask for move coordinates and validate them
                     human.movesTaken.push(new Move(coordinates,board));//add new move
                     System.out.println("Moving a piece from: " + human.movesTaken.peek().getStartingPos() +
                             " to " + human.movesTaken.peek().getTargetPos());
@@ -87,7 +87,76 @@ public class Game
 
     public void startVsPlayer(String player1,String player2)
     {
-        board.drawBoard();
+        board.drawBoard();//Draws a starting board
+        Player playerOne = new Player(player1,"w");
+        Player playerTwo = new Player(player2, "b");
+        while(board.checkPieceCount(playerOne.getPieceColour())>0 || board.checkPieceCount(playerTwo.getPieceColour())>0)//Keep playing while you have pieces on board
+        {
+            doHumanMove(playerOne);
+            doHumanMove(playerTwo);
+
+
+
+        }
+    }
+
+    public void doHumanMove(Player player)
+    {
+//        System.out.println(board.checkForCapture("w"));
+        if(!board.checkForCapture(player.getPieceColour()).isEmpty())
+        {
+            System.out.println(board.checkForCapture(player.getPieceColour()));
+            String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
+            //we ask for valid coordinates
+
+            player.movesTaken.push(new Move(captureMoveCoordinates,board));//when we get them we create the move and update screen
+            System.out.println("Moving a piece from: " + player.movesTaken.peek().getStartingPos() +
+                    " to " + player.movesTaken.peek().getTargetPos());
+
+            //TODO: need to get capture figure update method
+            player.movesTaken.peek().advancedMove(player.movesTaken.peek().getStartingPosNummeric(),
+                    player.movesTaken.peek().getTargetPosNummeric(),player.getPieceColour());
+            //this updates capturedPieces coordinates
+
+            board.updateBoard(player.movesTaken.peek(),player.getPieceColour(),false,false);
+            displayMovesHistory(player);
+        }
+        else
+        {
+            System.out.println(player.getName()+" please enter your next move starting and ending coordinates separated by comma");
+            System.out.println("If you want to undo your last move please enter \"undo\"");
+            System.out.println("If you want to redo your last undo please type \"redo\"");
+            input = scanner.nextLine();
+            if (input.equalsIgnoreCase("undo"))
+            {
+                undoMove(player);
+                doHumanMove(player);
+            }
+            else if (input.equalsIgnoreCase("redo"))
+            {
+                redoMove(player);
+            }
+            else
+            {
+                String [] coordinates = prompter.askForMove(input,player);//ask for move coordinates and validate them
+                player.movesTaken.push(new Move(coordinates,board));//add new move
+                System.out.println("Moving a piece from: " + player.movesTaken.peek().getStartingPos() +
+                        " to " + player.movesTaken.peek().getTargetPos());
+                System.out.println(Arrays.toString(player.movesTaken.peek().getStartingPosNummeric()));
+                System.out.println(Arrays.toString(player.movesTaken.peek().getTargetPosNummeric()));
+                //System.out.println(board.checkRightCapture(2,2,"w"));
+                //System.out.println(board.checkLeftCapture(2,2,"w"));
+//                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
+//                    {
+//                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
+//                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
+//                    }
+//                    //draws an updated position of the board when basic move is made
+                board.updateBoard(player.movesTaken.peek(),player.getPieceColour(),false,false);
+            }
+            displayMovesHistory(player);
+
+        }
     }
 
 

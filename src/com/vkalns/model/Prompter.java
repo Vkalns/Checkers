@@ -14,8 +14,8 @@ public class Prompter
     int[] targetPos;
     Board board;
     Player player;
-    String colour1 = "w";
-    String colour2 = "b";
+//    String colour1 = "w";
+//    String colour2 = "b";
     Scanner scanner = new Scanner(System.in);
 
     public Prompter()
@@ -40,16 +40,15 @@ public class Prompter
             if (gameChoice==1)
             {
                 System.out.println("Player 1 will play with whites and player 2 will play with blacks");
-                //TODO if I have time implement a nice Choose name for players and choose colour
                 Game checkers = new Game();
                 System.out.println("Player 1 please enter your name: ");
                 scanner.nextLine();
                 String playerOne = scanner.nextLine();
                 System.out.println(playerOne+ " you are playing with white pieces");
                 System.out.println("Player 2 please enter your name: ");
-                scanner.nextLine();
+//                scanner.nextLine();
                 String playerTwo = scanner.nextLine();
-                System.out.println(playerOne+ " you are playing with black pieces");
+                System.out.println(playerTwo+ " you are playing with black pieces");
                 checkers.startVsPlayer(playerOne,playerTwo);
 
             }
@@ -78,7 +77,7 @@ public class Prompter
 
     }
 
-    public String[] askForMove(String playersInput)
+    public String[] askForMove(String playersInput,Player player)
     {//asks for players input and returns string array with two elements
         // [0] is starting coordinates [1] is final coordinates
 
@@ -86,7 +85,7 @@ public class Prompter
             {
                 System.out.println("Not valid data was entered");
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
-                askForMove(playersInput = scanner.nextLine());
+                askForMove(playersInput = scanner.nextLine(),player);
             }
             coordinates = playersInput.split(",");
             if (coordinates.length==0 || coordinates[0].indexOf(" ")!=-1 || coordinates[1].indexOf(" ")!=-1)
@@ -95,12 +94,12 @@ public class Prompter
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
 //                coordinates[0]="";
 //                coordinates[1]="";
-                askForMove(scanner.nextLine());
+                askForMove(scanner.nextLine(),player);
             }
-            if(!isCoordinatesValid(coordinates))
+            if(!isCoordinatesValid(coordinates,player.getPieceColour()))
             {
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
-                askForMove(scanner.nextLine());
+                askForMove(scanner.nextLine(),player);
             }
 
 
@@ -108,7 +107,7 @@ public class Prompter
         return coordinates;
     }
 
-    public String[] askForCaptureMove(ArrayList<Integer> pieceCoordinates)
+    public String[] askForCaptureMove(ArrayList<Integer> pieceCoordinates,Player player)
     {
         String [] moveCoordinates;
         if(pieceCoordinates.size()<3)//only one piece can capture
@@ -118,25 +117,40 @@ public class Prompter
             System.out.println(Arrays.toString(startingCoordinates));
             //getting string representation of point on board which has piece which needs to do capture move
 
-            System.out.println("You must capture opponents piece in "+startingCoordinates[0]+startingCoordinates[1]);
-            System.out.println("Please enter your move's ending coordinates");
-            String captureEndCoordinates = scanner.nextLine();
+            System.out.println(player.getName()+" you must capture opponents piece in "+startingCoordinates[0]+startingCoordinates[1]);
+            System.out.println("Please enter your move's ending coordinate");
+            String captureEndCoordinates = scanner.nextLine().toUpperCase();
             if (captureEndCoordinates.trim().isEmpty())
             {
                 System.out.println("Not valid data was entered");
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
-                askForCaptureMove(board.checkForCapture(player.getPieceColour()));
+                askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
             }
             String startingcoord = startingCoordinates[0].concat(startingCoordinates[1]);
             System.out.println(startingcoord);
+            System.out.println(captureEndCoordinates);
             moveCoordinates =  new String[]{startingcoord,captureEndCoordinates};
-            if(!isCoordinatesValid(moveCoordinates))
+            System.out.println(Arrays.toString(moveCoordinates));
+            if(!isCoordinatesValid(moveCoordinates,player.getPieceColour()))
             {
-                System.out.println("Please enter your next move starting and ending coordinates separated by comma");
-                askForCaptureMove(board.checkForCapture(player.getPieceColour()));
+                System.out.println("Wrong coordinate!");
+                askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
             }
             else if(pieceCoordinates.size()>3)
-            {}
+            {
+                //int[]manyStartingCoordinatesInt= new int[2];
+                String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
+                System.out.println(player.getName()+" you must capture opponents piece by either ");
+                for (int i=0;i<manyStartingCoordinates.length-1;i=i+2)
+                {
+                    System.out.print(manyStartingCoordinates[i]+manyStartingCoordinates[i+1]+" or ");
+                }
+                askForMove(playersInput,player);
+
+                moveCoordinates = new String[]{startingcoord,captureEndCoordinates};
+                //TODO: if there is more then one capturing situation
+            }
+
             return moveCoordinates;
 
         }
@@ -189,44 +203,50 @@ public class Prompter
         //String coordiantes = coordinates.toUpperCase();
 
         String []horizontalInLetter={"",""};
-        switch(coordinates.get(0)) {
-            case 1:
-                horizontalInLetter[0] = "A";
-                break;
-            case 2 :
-                horizontalInLetter[0] = "B";
-                break;
-            case 3 :
-                horizontalInLetter[0] = "C";
-                break;
-            case 4 :
-                horizontalInLetter[0] = "D";
-                break;
-            case 5 :
-                horizontalInLetter[0] = "E";
-                break;
-            case 6 :
-                horizontalInLetter[0] = "F";
-                break;
-            case 7 :
-                horizontalInLetter[0] = "G";
-                break;
-            case 8 :
-                horizontalInLetter[0] = "H";
-                break;
-            default :
-                System.out.println("Invalid coordinates");
-                horizontalInLetter[0]="0";
+        for (int i=0;i<coordinates.size()-1;i=i+2)
+        {
+            switch(coordinates.get(i)) {
+                case 1:
+                    horizontalInLetter[i] = "A";
+                    break;
+                case 2 :
+                    horizontalInLetter[i] = "B";
+                    break;
+                case 3 :
+                    horizontalInLetter[i] = "C";
+                    break;
+                case 4 :
+                    horizontalInLetter[i] = "D";
+                    break;
+                case 5 :
+                    horizontalInLetter[i] = "E";
+                    break;
+                case 6 :
+                    horizontalInLetter[i] = "F";
+                    break;
+                case 7 :
+                    horizontalInLetter[i] = "G";
+                    break;
+                case 8 :
+                    horizontalInLetter[i] = "H";
+                    break;
+                default :
+                    System.out.println("Invalid coordinates");
+                    horizontalInLetter[i]="0";
+            }
+            horizontalInLetter[i+1] = Integer.toString(coordinates.get(i+1));
         }
-        horizontalInLetter[1] = Integer.toString(coordinates.get(1));
         return horizontalInLetter;
     }
 
-    public boolean isCoordinatesValid(String []coordinates)
+    public boolean isCoordinatesValid(String []coordinates,String playerColour)
     {//this checks if coordinates are in range
         boolean isValid=true;
         int[] startingPos = changeToNumbers(coordinates[0]);
         int[] endPos = changeToNumbers(coordinates[1]);
+        String opponentsColour="";
+        if(playerColour=="w"){opponentsColour="b";}
+        if(playerColour=="b"){opponentsColour="w";}
         if(startingPos[0]==0 ||(startingPos[1]>8 || startingPos[1]<1))
         {
             System.out.println("Starting position is invalid");
@@ -238,14 +258,14 @@ public class Prompter
             isValid =false;
         }
         if(board.board[endPos[1]-1][endPos[0]-1]==" " ||
-                board.board[endPos[1]-1][endPos[0]-1].equalsIgnoreCase(colour1)||
-                board.board[endPos[1]-1][endPos[0]-1].equalsIgnoreCase(colour2))
+                board.board[endPos[1]-1][endPos[0]-1].equalsIgnoreCase(playerColour)||
+                board.board[endPos[1]-1][endPos[0]-1].equalsIgnoreCase(opponentsColour))
         {
             System.out.println("You can't move there");
             isValid =false;
         }
 
-        if(!board.board[startingPos[1]-1][startingPos[0]-1].equalsIgnoreCase(colour1))
+        if(!board.board[startingPos[1]-1][startingPos[0]-1].equalsIgnoreCase(playerColour))
         {
             System.out.println("You don't have a piece there");
             isValid =false;
