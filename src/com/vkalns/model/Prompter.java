@@ -270,6 +270,12 @@ public class Prompter
             System.out.println("You don't have a piece there");
             isValid =false;
         }
+        if(!board.checkRightCapture(startingPos[0],startingPos[1],playerColour)||
+                !board.checkLeftCapture(startingPos[0],startingPos[1],playerColour))
+        {
+            System.out.println("You can't jump unless you capture");
+            isValid=false;
+        }
         return isValid;
     }
 

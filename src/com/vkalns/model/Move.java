@@ -108,7 +108,7 @@ public class Move
 
     public void advancedMove(int[] startPosition,int[]targetPosition,String colour)
     {//TODO create similar move but for king
-        if(colour.equals("w")&&targetPosition[1]==startPosition[1]+2)//if whites go ahead by two on y axis
+        if(targetPosition[1]==startPosition[1]+2)//if whites go ahead by two on y axis
         {
             if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
             {
@@ -116,13 +116,8 @@ public class Move
                 jumpPosition[1]=startPosition[1]+1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    //capturedPiecesPositions.add(jumpPosition[])
-                    //board.board[jumpPosition[0]][jumpPosition[1]]="*";
-
                     capturedPiecesPositions.add(jumpPosition[0]);
                     capturedPiecesPositions.add(jumpPosition[1]);
-                    //TODO this should be in update board  method
-                    //capturing piece between starting and target position
                 }
             }
             else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
@@ -131,12 +126,8 @@ public class Move
                 jumpPosition[1]=startPosition[1]+1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    //capturedPiecesPositions.add(jumpPosition[])
-                    capturedPiecesPositions.add(jumpPosition[0]-1);
-                    capturedPiecesPositions.add(jumpPosition[1]-1);
-                    //TODO this should be in update board  method
-                    //capturing piece between starting and target position
-
+                    capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
                 }
             }
         }

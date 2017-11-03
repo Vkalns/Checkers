@@ -64,9 +64,9 @@ public class Board
         }
         else //if we undo the move we swap the elements from w/b back to *
             {
-                board[move.getStartingPosNummeric()[1]-1][move.getStartingPosNummeric()[0]-1]=colour;
+                board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=colour;
 
-                board[move.getTargetPosNummeric()[1]-1][move.targetPosNummeric[0]-1]="*";
+                board[move.getTargetPosNummeric()[0]][move.targetPosNummeric[1]]="*";
 
                 if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
                 {
