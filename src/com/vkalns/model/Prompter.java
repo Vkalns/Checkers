@@ -138,17 +138,38 @@ public class Prompter
                 askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
             }
             else if(pieceCoordinates.size()>3)
-            {
-                //int[]manyStartingCoordinatesInt= new int[2];
-                String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
-                System.out.println(player.getName()+" you must capture opponents piece by either ");
-                for (int i=0;i<manyStartingCoordinates.length-1;i=i+2)
-                {
-                    System.out.print(manyStartingCoordinates[i]+manyStartingCoordinates[i+1]+" or ");
-                }
-                askForMove(playersInput,player);
+            {//when multiple pieces can capture
 
-                moveCoordinates = new String[]{startingcoord,captureEndCoordinates};
+                String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
+                String[]possibleStartingCoordinates=new String[]{};
+                for (int i=0; i<manyStartingCoordinates.length-1;i=i+2)
+                {
+                    int index =0;
+                    possibleStartingCoordinates[index]= manyStartingCoordinates[i].concat(manyStartingCoordinates[i+1]);
+                    index++;
+                }
+                System.out.println(player.getName()+" you must capture opponents piece by either ");
+                for (int i=0;i<possibleStartingCoordinates.length-1;i++)
+                {
+                    System.out.print(possibleStartingCoordinates[i]+" or ");
+                }
+                String []temp = askForMove(playersInput,player);
+                boolean goodStartingCoordinate=false;
+                while (!goodStartingCoordinate)
+                {
+                    for (int i=0;i<possibleStartingCoordinates.length-1;i++)
+                    {
+                        if (possibleStartingCoordinates[i].equalsIgnoreCase(temp[0]))
+                        {
+                            goodStartingCoordinate=true;
+                            break;
+                        }
+                    }
+                    temp =askForMove(playersInput,player);
+                }
+
+
+                return temp;
                 //TODO: if there is more then one capturing situation
             }
 
