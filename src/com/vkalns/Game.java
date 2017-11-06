@@ -38,8 +38,9 @@ public class Game
         Player playerTwo = new Player(player2, "b");
         while(board.checkPieceCount(playerOne.getPieceColour())>0 || board.checkPieceCount(playerTwo.getPieceColour())>0)//Keep playing while you have pieces on board
         {
-            doHumanMove(playerOne);
+
             doHumanMove(playerTwo);
+            doHumanMove(playerOne);
         }
     }
 

@@ -101,6 +101,7 @@ public class Prompter
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
                 askForMove(scanner.nextLine(),player);
             }
+//            if()
 
 
 
@@ -270,8 +271,9 @@ public class Prompter
             System.out.println("You don't have a piece there");
             isValid =false;
         }
-        if(!board.checkRightCapture(startingPos[0],startingPos[1],playerColour)||
-                !board.checkLeftCapture(startingPos[0],startingPos[1],playerColour))
+        if((!board.checkRightCapture(startingPos[1]-1,startingPos[0]-1,playerColour)&&
+                !board.checkLeftCapture(startingPos[1]-1,startingPos[0]-1,playerColour))&&
+                (startingPos[1]>=endPos[1]+2 || startingPos[1]<=endPos[1]-2))
         {
             System.out.println("You can't jump unless you capture");
             isValid=false;

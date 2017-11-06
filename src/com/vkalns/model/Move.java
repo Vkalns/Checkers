@@ -108,7 +108,7 @@ public class Move
 
     public void advancedMove(int[] startPosition,int[]targetPosition,String colour)
     {//TODO create similar move but for king
-        if(targetPosition[1]==startPosition[1]+2)//if whites go ahead by two on y axis
+        if(targetPosition[1]==startPosition[1]+2)//if player go ahead by two on y axis
         {
             if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
             {
@@ -131,6 +131,31 @@ public class Move
                 }
             }
         }
+
+        if(targetPosition[1]==startPosition[1]-2)//if player go back by two on y axis
+        {
+            if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
+            {
+                jumpPosition[0]=startPosition[0]+1;
+                jumpPosition[1]=startPosition[1]-1;
+                if(hasPieceToCapture(jumpPosition,colour))
+                {
+                    capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
+                }
+            }
+            else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
+            {
+                jumpPosition[0]=startPosition[0]-1;
+                jumpPosition[1]=startPosition[1]-1;
+                if(hasPieceToCapture(jumpPosition,colour))
+                {
+                    capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
+                }
+            }
+        }
+
 
 
     }
