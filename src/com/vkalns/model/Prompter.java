@@ -137,45 +137,44 @@ public class Prompter
                 System.out.println("Wrong coordinate!");
                 askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
             }
-            else if(pieceCoordinates.size()>3)
-            {//when multiple pieces can capture
+        }
+        else if(pieceCoordinates.size()>3)
+        {//when multiple pieces can capture
 
-                String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
-                String[]possibleStartingCoordinates=new String[]{};
-                for (int i=0; i<manyStartingCoordinates.length-1;i=i+2)
-                {
-                    int index =0;
-                    possibleStartingCoordinates[index]= manyStartingCoordinates[i].concat(manyStartingCoordinates[i+1]);
-                    index++;
-                }
-                System.out.println(player.getName()+" you must capture opponents piece by either ");
+            String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
+            String[]possibleStartingCoordinates=new String[]{};
+            for (int i=0; i<manyStartingCoordinates.length-1;i=i+2)
+            {
+                int index =0;
+                possibleStartingCoordinates[index]= manyStartingCoordinates[i].concat(manyStartingCoordinates[i+1]);
+                index++;
+            }
+            System.out.println(player.getName()+" you must capture opponents piece by either ");
+            for (int i=0;i<possibleStartingCoordinates.length-1;i++)
+            {
+                System.out.print(possibleStartingCoordinates[i]+" or ");
+            }
+            String []temp = askForMove(playersInput,player);
+            boolean goodStartingCoordinate=false;
+            while (!goodStartingCoordinate)
+            {
                 for (int i=0;i<possibleStartingCoordinates.length-1;i++)
                 {
-                    System.out.print(possibleStartingCoordinates[i]+" or ");
-                }
-                String []temp = askForMove(playersInput,player);
-                boolean goodStartingCoordinate=false;
-                while (!goodStartingCoordinate)
-                {
-                    for (int i=0;i<possibleStartingCoordinates.length-1;i++)
+                    if (possibleStartingCoordinates[i].equalsIgnoreCase(temp[0]))
                     {
-                        if (possibleStartingCoordinates[i].equalsIgnoreCase(temp[0]))
-                        {
-                            goodStartingCoordinate=true;
-                            break;
-                        }
+                        goodStartingCoordinate=true;
+                        break;
                     }
-                    temp =askForMove(playersInput,player);
                 }
-
-
-                return temp;
-                //TODO: if there is more then one capturing situation
+                temp =askForMove(playersInput,player);
             }
 
-            return moveCoordinates;
 
+            return temp;
+            //TODO: if there is more then one capturing situation
         }
+
+//        return moveCoordinates;
 
         return null;
 

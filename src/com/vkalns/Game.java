@@ -49,22 +49,42 @@ public class Game
 //        System.out.println(board.checkForCapture("w"));
         if(!board.checkForCapture(player1.getPieceColour()).isEmpty())
         {
-            //System.out.println(board.checkForCapture(player.getPieceColour()));
-            String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(player1.getPieceColour()),player1);
-            //we ask for valid coordinates
+            System.out.println(player1.getName()+" you must capture a piece. Please enter your next move starting and ending coordinates separated by comma");
+            System.out.println("If you want to undo your last move please enter \"undo\"");
+            System.out.println("If you want to redo your last undo please type \"redo\"");
+            input = scanner.nextLine();
 
-            player1.movesTaken.push(new Move(captureMoveCoordinates,board));//when we get them we create the move and update screen
-            System.out.println("Moving a piece from: " + player1.movesTaken.peek().getStartingPos() +
-                    " to " + player1.movesTaken.peek().getTargetPos());
+            String [] coordinates = prompter.askForMove(input,player1);//ask for move coordinates and validate them
+            System.out.println(Arrays.toString(coordinates));
+            Move move = new Move(coordinates,board);
+            player1.movesTaken.push(move);
+            if (!board.isCaptureMove(move.getStartingPosNummeric(),player1.getPieceColour()))
+            {
+                move=null;
+                player1.movesTaken.pop();
+                doHumanMove(player1,player2);
+            }
 
-            //TODO: need to get capture figure update method
             player1.movesTaken.peek().advancedMove(player1.movesTaken.peek().getStartingPosNummeric(),
                     player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
-            //this updates capturedPieces coordinates
+
+//            //System.out.println(board.checkForCapture(player.getPieceColour()));
+//            String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(player1.getPieceColour()),player1);
+//            //we ask for valid coordinates
+//
+//            player1.movesTaken.push(new Move(captureMoveCoordinates,board));//when we get them we create the move and update screen
+//            System.out.println("Moving a piece from: " + player1.movesTaken.peek().getStartingPos() +
+//                    " to " + player1.movesTaken.peek().getTargetPos());
+//
+//            //TODO: need to get capture figure update method
+//            player1.movesTaken.peek().advancedMove(player1.movesTaken.peek().getStartingPosNummeric(),
+//                    player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
+//            //this updates capturedPieces coordinates
 
             board.updateBoard(player1.movesTaken.peek(),player1.getPieceColour(),false,false);
             displayMovesHistory(player1);
         }
+
         else
         {
             System.out.println(player1.getName()+" please enter your next move starting and ending coordinates separated by comma");

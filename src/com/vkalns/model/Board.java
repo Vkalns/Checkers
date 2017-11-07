@@ -9,9 +9,9 @@ public class Board
             {"w"," ","w"," ","w"," ","w"," "},
             {" ","w"," ","w"," ","w"," ","w"},
             {"w"," ","w"," ","w"," ","w"," "},
-            {" ","*"," ","*"," ","*"," ","*"},
+            {" ","b"," ","*"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","b"," ","b"},
+            {" ","b"," ","*"," ","b"," ","b"},
             {"b"," ","b"," ","b"," ","b"," "},
             {" ","b"," ","b"," ","b"," ","b"}};
     //public ArrayList<Integer>
@@ -211,9 +211,22 @@ public class Board
                     }
                 }
             }
-//        }
         return piecesWhichCanCapture;
 
+    }
+
+    public boolean isCaptureMove(int[]startingCoordinates,String colour)
+    {
+        boolean isCapture=false;
+        if(board[startingCoordinates[0]][startingCoordinates[1]].equalsIgnoreCase(colour))
+        {
+            if(checkRightCapture(startingCoordinates[0],startingCoordinates[1],colour)||
+                    checkLeftCapture(startingCoordinates[0],startingCoordinates[1],colour))
+            {
+                isCapture=true;
+            }
+        }
+        return isCapture;
     }
 
 

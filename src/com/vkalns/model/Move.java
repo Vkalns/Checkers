@@ -163,8 +163,8 @@ public class Move
     public boolean hasPieceToCapture(int[]coordinates,String colour)
     {//this checks if in given coordinate has opponent's piece
         boolean hasPiece = false;
-        System.out.println(board.board[coordinates[0]][coordinates[1]]);
-        System.out.println(board.board[coordinates[0]-1][coordinates[1]-1]);
+        //System.out.println(board.board[coordinates[0]][coordinates[1]]);
+        //System.out.println(board.board[coordinates[0]-1][coordinates[1]-1]);
         if (colour.equalsIgnoreCase("w") && (board.board[coordinates[0]][coordinates[1]].equalsIgnoreCase("b")))
         {
             hasPiece = true;
