@@ -106,7 +106,7 @@ public class Move
     }
 
 
-    public void advancedMove(int[] startPosition,int[]targetPosition,String colour)
+    public void addCapturedPiecePositions(int[] startPosition, int[]targetPosition, String colour)
     {//TODO create similar move but for king
         if(targetPosition[1]==startPosition[1]+2)//if player go ahead by two on y axis
         {

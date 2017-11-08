@@ -101,84 +101,10 @@ public class Prompter
                 System.out.println("Please enter your next move starting and ending coordinates separated by comma");
                 askForMove(scanner.nextLine(),player);
             }
-//            if()
-
-
-
         return coordinates;
     }
 
-    public String[] askForCaptureMove(ArrayList<Integer> pieceCoordinates,Player player)
-    {
-        String [] moveCoordinates;
-        if(pieceCoordinates.size()<3)//only one piece can capture
-        {
 
-            String []startingCoordinates=changeToLetters(pieceCoordinates);
-            System.out.println(Arrays.toString(startingCoordinates));
-            //getting string representation of point on board which has piece which needs to do capture move
-
-            System.out.println(player.getName()+" you must capture opponents piece in "+startingCoordinates[0]+startingCoordinates[1]);
-            System.out.println("Please enter your move's ending coordinate");
-            String captureEndCoordinates = scanner.nextLine().toUpperCase();
-            if (captureEndCoordinates.trim().isEmpty())
-            {
-                System.out.println("Not valid data was entered");
-                System.out.println("Please enter your next move starting and ending coordinates separated by comma");
-                askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
-            }
-            String startingcoord = startingCoordinates[0].concat(startingCoordinates[1]);
-            System.out.println(startingcoord);
-            System.out.println(captureEndCoordinates);
-            moveCoordinates =  new String[]{startingcoord,captureEndCoordinates};
-            System.out.println(Arrays.toString(moveCoordinates));
-            if(!isCoordinatesValid(moveCoordinates,player.getPieceColour()))
-            {
-                System.out.println("Wrong coordinate!");
-                askForCaptureMove(board.checkForCapture(player.getPieceColour()),player);
-            }
-        }
-        else if(pieceCoordinates.size()>3)
-        {//when multiple pieces can capture
-
-            String[]manyStartingCoordinates=changeToLetters(pieceCoordinates);
-            String[]possibleStartingCoordinates=new String[]{};
-            for (int i=0; i<manyStartingCoordinates.length-1;i=i+2)
-            {
-                int index =0;
-                possibleStartingCoordinates[index]= manyStartingCoordinates[i].concat(manyStartingCoordinates[i+1]);
-                index++;
-            }
-            System.out.println(player.getName()+" you must capture opponents piece by either ");
-            for (int i=0;i<possibleStartingCoordinates.length-1;i++)
-            {
-                System.out.print(possibleStartingCoordinates[i]+" or ");
-            }
-            String []temp = askForMove(playersInput,player);
-            boolean goodStartingCoordinate=false;
-            while (!goodStartingCoordinate)
-            {
-                for (int i=0;i<possibleStartingCoordinates.length-1;i++)
-                {
-                    if (possibleStartingCoordinates[i].equalsIgnoreCase(temp[0]))
-                    {
-                        goodStartingCoordinate=true;
-                        break;
-                    }
-                }
-                temp =askForMove(playersInput,player);
-            }
-
-
-            return temp;
-            //TODO: if there is more then one capturing situation
-        }
-
-//        return moveCoordinates;
-
-        return null;
-
-    }
 
     private int []changeToNumbers(String coordinates)
     {

@@ -65,7 +65,7 @@ public class Game
                 doHumanMove(player1,player2);
             }
 
-            player1.movesTaken.peek().advancedMove(player1.movesTaken.peek().getStartingPosNummeric(),
+            player1.movesTaken.peek().addCapturedPiecePositions(player1.movesTaken.peek().getStartingPosNummeric(),
                     player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
 
 //            //System.out.println(board.checkForCapture(player.getPieceColour()));
@@ -77,7 +77,7 @@ public class Game
 //                    " to " + player1.movesTaken.peek().getTargetPos());
 //
 //            //TODO: need to get capture figure update method
-//            player1.movesTaken.peek().advancedMove(player1.movesTaken.peek().getStartingPosNummeric(),
+//            player1.movesTaken.peek().addCapturedPiecePositions(player1.movesTaken.peek().getStartingPosNummeric(),
 //                    player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
 //            //this updates capturedPieces coordinates
 
@@ -114,7 +114,7 @@ public class Game
                 //System.out.println(board.checkLeftCapture(2,2,"w"));
 //                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
 //                    {
-//                        human.movesTaken.peek().advancedMove(human.movesTaken.peek().getStartingPosNummeric(),
+//                        human.movesTaken.peek().addCapturedPiecePositions(human.movesTaken.peek().getStartingPosNummeric(),
 //                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
 //                    }
 //                    //draws an updated position of the board when basic move is made
@@ -148,6 +148,8 @@ public class Game
         //TODO: remove last element from movesTaken Stack
         if(!player1.movesTaken.isEmpty())
         {//takes move off and puts it in another undo move stack
+//            player2.movesTaken.peek().addCapturedPiecePositions(player2.movesTaken.peek().getStartingPosNummeric(),
+//                    player2.movesTaken.peek().getTargetPosNummeric(),player2.getPieceColour());
             board.updateBoard(player2.movesTaken.peek(),player2.getPieceColour(),true,false);
             player2.movesUndo.push(player2.movesTaken.pop());
             board.updateBoard(player1.movesTaken.peek(),player1.getPieceColour(),true,false);
