@@ -10,14 +10,15 @@ public class Move
 {
     Board board = new Board();
     String[] input;
+    int [] startingPosNummeric;
+    int [] targetPosNummeric;
+    int[] capturePosition;
     String startingPos = "";
     String targetPos = "";
-    int [] startingPosNummeric;
-    int[] capturePosition;
+
     int [] jumpPosition = new int[2];
-    int [] targetPosNummeric;
-    Player player;
-    boolean isValid;
+
+
     ArrayList<Integer> capturedPiecesPositions = new ArrayList<Integer>();
 
     public Move(String [] input,Board board)
@@ -30,6 +31,13 @@ public class Move
         this.startingPosNummeric = startingPosNummeric;
         int targetPosNummeric[] = changeToNumbers(targetPos);
         this.targetPosNummeric = targetPosNummeric;
+    }
+
+    public Move(int[]startCoordinates,int[]endCoordinates,Board board)
+    {
+        startingPosNummeric= startCoordinates;
+        targetPosNummeric = endCoordinates;
+        this.board = board;
     }
 
     public Move(String[] input,ArrayList<Integer> capturedPiecesPositions,Board board)
@@ -103,6 +111,46 @@ public class Move
         horizontalInNr[1]--;
         horizontalInNr[0] = Character.getNumericValue(coordinates.charAt(1))-1;
         return horizontalInNr;
+    }
+
+    public String changeToLetters(int[] coordinates)
+    {
+        //String coordiantes = coordinates.toUpperCase();
+
+        String horizontalInLetter="";
+
+            switch(coordinates[1]+1) {
+                case 1:
+                    horizontalInLetter = "A";
+                    break;
+                case 2 :
+                    horizontalInLetter = "B";
+                    break;
+                case 3 :
+                    horizontalInLetter = "C";
+                    break;
+                case 4 :
+                    horizontalInLetter = "D";
+                    break;
+                case 5 :
+                    horizontalInLetter = "E";
+                    break;
+                case 6 :
+                    horizontalInLetter = "F";
+                    break;
+                case 7 :
+                    horizontalInLetter = "G";
+                    break;
+                case 8 :
+                    horizontalInLetter = "H";
+                    break;
+                default :
+                    System.out.println("Invalid coordinates");
+                    horizontalInLetter ="-1";
+            }
+            horizontalInLetter = horizontalInLetter.concat(Integer.toString(coordinates[0]+1));
+
+        return horizontalInLetter;
     }
 
 
