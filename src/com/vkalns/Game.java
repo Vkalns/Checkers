@@ -175,7 +175,8 @@ public class Game
                 {
                     if (board.board[y][x].equalsIgnoreCase(computer.getPieceColour()))
                     {
-                        if (computer.getPieceColour().equalsIgnoreCase("b")//if Ai plays with whites
+                        if ((computer.getPieceColour().equalsIgnoreCase("b")||
+                                board.board[y][x].equals("W"))//if Ai plays with blacks
                                 && ((board.checkRightUpwards(y + 1, x - 1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y - 1][x + 1].equalsIgnoreCase("*")))
                         {
@@ -183,7 +184,9 @@ public class Game
                             int[] endCoordinates = {y - 1, x + 1};
                             AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                         }
-                        else if (computer.getPieceColour().equalsIgnoreCase("b")//if Ai plays with whites
+                        else if ((computer.getPieceColour().equalsIgnoreCase("b")||
+                                board.board[y][x].equals("W"))
+                                //if Ai plays with blacks
                                 && ((board.checkLeftUpwards(y + 1, x + 1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y - 1][x - 1].equalsIgnoreCase("*")))
                         {
@@ -191,7 +194,9 @@ public class Game
                             int[] endCoordinates = {y - 1, x - 1};
                             AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                         }
-                        else if (computer.getPieceColour().equalsIgnoreCase("w")//if Ai plays with whites
+                        else if ((computer.getPieceColour().equalsIgnoreCase("w")
+                                ||
+                                board.board[y][x].equals("B"))//if Ai plays with whites
                                 && ((board.checkRightDownwards(y-1, x-1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y + 1][x + 1].equalsIgnoreCase("*")))
                         {
@@ -199,7 +204,8 @@ public class Game
                             int[] endCoordinates = {y + 1, x + 1};
                             AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                         }
-                        else if (computer.getPieceColour().equalsIgnoreCase("w")//if Ai plays with whites
+                        else if ((computer.getPieceColour().equalsIgnoreCase("w")||
+                                board.board[y][x].equals("B"))//if Ai plays with whites
                                 && ((board.checkLeftDownwards(y-1, x+1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y + 1][x - 1].equalsIgnoreCase("*")))
                         {
@@ -213,6 +219,10 @@ public class Game
         }
         else//if there is capture to be done
             {
+                int y = board.checkForCapture(computer.getPieceColour()).get(0);
+                int x = board.checkForCapture(computer.getPieceColour()).get(1);
+                //taking first coordinates from the list of pieces which can capture
+                int[] startingCoordinates = {y,x};
 
             }
 
