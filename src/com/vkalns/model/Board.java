@@ -5,15 +5,25 @@ import java.util.ArrayList;
 public class Board
 {
 
+//    public String [][] board  = {
+//            {"w"," ","w"," ","w"," ","w"," "},
+//            {" ","w"," ","w"," ","w"," ","w"},
+//            {"w"," ","w"," ","w"," ","w"," "},
+//            {" ","*"," ","*"," ","*"," ","*"},
+//            {"*"," ","*"," ","*"," ","*"," "},
+//            {" ","b"," ","b"," ","b"," ","b"},
+//            {"b"," ","b"," ","b"," ","b"," "},
+//            {" ","b"," ","b"," ","b"," ","b"}};
+
     public String [][] board  = {
-            {"w"," ","w"," ","w"," ","w"," "},
-            {" ","w"," ","w"," ","w"," ","w"},
-            {"w"," ","w"," ","w"," ","w"," "},
+            {"*"," ","*"," ","*"," ","*"," "},
+            {" ","b"," ","*"," ","w"," ","*"},
+            {"*"," ","*"," ","*"," ","*"," "},
             {" ","*"," ","*"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","b"," ","b"},
-            {"b"," ","b"," ","b"," ","b"," "},
-            {" ","b"," ","b"," ","b"," ","b"}};
+            {" ","*"," ","*"," ","*"," ","*"},
+            {"*"," ","w"," ","w"," ","*"," "},
+            {" ","*"," ","*"," ","*"," ","*"}};
     //public ArrayList<Integer>
 
 
@@ -47,10 +57,18 @@ public class Board
     {
         if(undo==false)
         {//if we moving players or AI piece we swap the array elements
+            String piece = board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]];
             board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]="*";
 
-            board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=colour;
-
+            if (move.getTargetPosNummeric()[0]==0 && colour.equalsIgnoreCase("b") ||
+                    (move.getTargetPosNummeric()[0]==7 && colour.equalsIgnoreCase("w")))
+            {//if move ends at the other end of board then capitalise the piece(make it KING)
+                board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece.toUpperCase();
+            }
+            else
+                {
+                    board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece;
+                }
 
             if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
             {
@@ -64,7 +82,8 @@ public class Board
         }
         else //if we undo the move we swap the elements from w/b back to *
             {
-                board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=colour;
+                String piece = board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]];
+                board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=piece;
 
                 board[move.getTargetPosNummeric()[0]][move.targetPosNummeric[1]]="*";
 

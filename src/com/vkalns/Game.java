@@ -143,7 +143,7 @@ public class Game
         System.out.println(computer.getAllPossibleMoves().size());
         Random random = new Random();
         //here we push a move to moves taken stack by choosing a random move from ArrayList
-        computer.movesTaken.push(computer.getAllPossibleMoves().get(random.nextInt(computer.getAllPossibleMoves().size()-1)));
+        computer.movesTaken.push(computer.getAllPossibleMoves().get(random.nextInt(computer.getAllPossibleMoves().size())));
         //and then we update the screen
         try
         {
