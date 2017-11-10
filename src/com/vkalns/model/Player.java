@@ -9,8 +9,8 @@ public class Player
 {
     String name;
     String pieceColour;
-    public Stack<Move> movesTaken = new Stack<>();
-    public Stack<Move> movesUndo = new Stack<>();
+    public Stack<MoveBundle> movesTaken = new Stack<>();
+    public Stack<MoveBundle> movesUndo = new Stack<>();
     public Player(String name, String pieceColour)
     {
         this.name = name;
