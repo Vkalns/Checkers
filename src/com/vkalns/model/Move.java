@@ -73,7 +73,7 @@ public class Move
         return targetPosNummeric;
     }
 
-    private int []changeToNumbers(String coordinates)
+    public int []changeToNumbers(String coordinates)
     {
         String toUpper = coordinates.toUpperCase();
 

@@ -46,8 +46,8 @@ public class Game
     public void startAiVsAi()
     {
         board.drawBoard();//Draws a starting board
-        AI computer1 = new AI("Omega","w");
-        AI computer2 = new AI("Grand Master","b");
+        AI computer1 = new AI("Whites","w");
+        AI computer2 = new AI("Blacks","b");
         while(board.checkPieceCount(computer1.getPieceColour())>0&&(board.checkPieceCount(computer2.getPieceColour())>0))//Keep playing while you have pieces on board
         {
             doComputerMove(computer1);
@@ -96,7 +96,9 @@ public class Game
 //                    player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
 //            //this updates capturedPieces coordinates
 
-            board.updateBoard(player1.movesTaken.peek().getAllMoves().get(0),player1.getPieceColour(),false,false);
+            board.updateBoard(move,player1.getPieceColour(),false,false);
+
+            doAnotherCapture(player1.movesTaken.peek(),board,player1,player2);
 
             displayMovesHistory(player1);
         }
@@ -134,12 +136,27 @@ public class Game
 //                        human.movesTaken.peek().addCapturedPiecePositions(human.movesTaken.peek().getStartingPosNummeric(),
 //                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
 //                    }
-//                    //draws an updated position of the board when basic move is made
+                   //draws an updated position of the board when basic move is made
                 board.updateBoard(move,player1.getPieceColour(),false,false);
+
             }
             displayMovesHistory(player1);
 
         }
+    }
+
+    public void doAnotherCapture(MoveBundle bundle, Board board,Player player1, Player player2 )
+    {
+        Move lastMove = bundle.getAllMoves().get(bundle.getAllMoves().size()-1);
+
+        if (board.checkRightCapture(lastMove.getTargetPosNummeric()[0],lastMove.getTargetPosNummeric()[1],player1.getPieceColour())
+                || board.checkLeftCapture(lastMove.getTargetPosNummeric()[0],lastMove.getTargetPosNummeric()[1],player1.getPieceColour()))
+        {
+            System.out.println(player1+" you can capture another piece please enter a end coordinate ");
+            String [] coordinates = prompter.askForMove(scanner.nextLine(),player1);
+            prompter.isCoordinatesValid(lastMove.changeToNumbers(coordinates[0]),lastMove.changeToNumbers(coordinates[1]),player1.getPieceColour());
+        }
+
     }
 
     public void doComputerMove(AI computer)
@@ -148,19 +165,20 @@ public class Game
         System.out.println(computer.getAllPossibleMoves().size());
         Random random = new Random();
         Move computerMove = computer.getAllPossibleMoves().get(random.nextInt(computer.getAllPossibleMoves().size()));
+        computerMove.addCapturedPiecePositions(computerMove.getStartingPosNummeric(),computerMove.getTargetPosNummeric(),computer.getPieceColour());
         //here we push a move to moves taken stack by choosing a random move from ArrayList
         computer.movesTaken.push(new MoveBundle(computerMove));
         //and then we update the screen
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             System.out.println(computer.getName()+" moving a piece from: " + computerMove.changeToLetters(computerMove.getStartingPosNummeric()) +
                     " to " + computerMove.changeToLetters(computerMove.getTargetPosNummeric()));
-            Thread.sleep(1000);
+            Thread.sleep(500);
             board.updateBoard(computerMove,computer.getPieceColour(),false,false);
-            Thread.sleep(1000);
+            Thread.sleep(500);
             displayMovesHistory(computer);
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         }
         catch (Exception ex)
         {
@@ -225,11 +243,50 @@ public class Game
         }
         else//if there is capture to be done
             {
-                int y = board.checkForCapture(computer.getPieceColour()).get(0);
-                int x = board.checkForCapture(computer.getPieceColour()).get(1);
+                int y = board.checkForCapture(computer.getPieceColour()).get(1)-1;
+                int x = board.checkForCapture(computer.getPieceColour()).get(0)-1;
                 //taking first coordinates from the list of pieces which can capture
                 int[] startingCoordinates = {y,x};
 
+                if(board.checkRightCapture(y,x,board.board[y][x]))//if capture is on right side
+                {
+                    if ((computer.getPieceColour().equalsIgnoreCase("w")||
+                            board.board[y][x].equals("B"))//if Ai plays with whites or black King
+                            && ((board.checkRightDownwards(y-1, x-1))//this function checks yx coordinates are in range for captures that's why its edited
+                            && board.board[y + 2][x + 2].equalsIgnoreCase("*")))
+                    {
+                        int[] endCoordinates = {y + 2, x + 2};
+                        AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
+                    }
+                    else if ((computer.getPieceColour().equalsIgnoreCase("b")||
+                            board.board[y][x].equals("W"))//if Ai plays with blacks
+                            && ((board.checkRightUpwards(y + 1, x - 1))//this function checks yx coordinates are in range for captures that's why its edited
+                            && (board.board[y - 2][x + 2].equalsIgnoreCase("*"))))
+                    {
+                        int[] endCoordinates = {y - 2, x + 2};
+                        AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
+                    }
+                }
+                else if (board.checkLeftCapture(y,x,board.board[y][x]))//if capture is on left side)
+                {
+                    if ((computer.getPieceColour().equalsIgnoreCase("w")||
+                            board.board[y][x].equals("B"))//if Ai plays with whites
+                            && ((board.checkLeftDownwards(y-1, x+1))//this function checks yx coordinates are in range for captures that's why its edited
+                            && board.board[y + 2][x - 2].equals("*")))
+                    {
+                        int[] endCoordinates = {y + 2, x - 2};
+                        AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
+                    }
+                    else if ((computer.getPieceColour().equalsIgnoreCase("b")||
+                            board.board[y][x].equals("W"))
+                            //if Ai plays with blacks
+                            && ((board.checkLeftUpwards(y + 1, x + 1))//this function checks yx coordinates are in range for captures that's why its edited
+                            && board.board[y - 2][x - 2].equals("*")))
+                    {
+                        int[] endCoordinates = {y - 2, x - 2};
+                        AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
+                    }
+                }
             }
 
 //        else
@@ -282,6 +339,7 @@ public class Game
 
 
                     }
+                count++;
 
             }
         }

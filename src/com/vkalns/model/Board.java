@@ -16,14 +16,14 @@ public class Board
             {" ","b"," ","b"," ","b"," ","b"}};
 
 //    public String [][] board  = {
-//            {"*"," ","*"," ","*"," ","*"," "},
-//            {" ","b"," ","*"," ","w"," ","*"},
-//            {"*"," ","*"," ","*"," ","*"," "},
+//            {"w"," ","w"," ","*"," ","*"," "},
+//            {" ","b"," ","*"," ","*"," ","*"},
+//            {"w"," ","*"," ","*"," ","*"," "},
 //            {" ","*"," ","*"," ","*"," ","*"},
 //            {"*"," ","*"," ","*"," ","*"," "},
 //            {" ","*"," ","*"," ","*"," ","*"},
-//            {"*"," ","w"," ","*"," ","b"," "},
-//            {" ","*"," ","*"," ","W"," ","*"}};
+//            {"*"," ","*"," ","*"," ","b"," "},
+//            {" ","*"," ","*"," ","b"," ","*"}};
     //public ArrayList<Integer>
 
 
@@ -156,20 +156,26 @@ public class Board
         boolean hasCapture = false;
         if(checkRightDownwards(y,x))
         {
-            if(colour.equalsIgnoreCase("w")&& board[y+1][x+1].equalsIgnoreCase("b"))
+            String startingpiece=board[y][x];
+            String capturePoint=board[y+1][x+1];
+            if((colour.equalsIgnoreCase("w")|| startingpiece.equals("B") )&& (!capturePoint.equalsIgnoreCase(startingpiece)
+                    && (!capturePoint.equals("*"))))
             {
-                if(colour.equalsIgnoreCase("w")&& board[y+2][x+2].equalsIgnoreCase("*"))
+                if(board[y+2][x+2].equalsIgnoreCase("*"))
                 {
-                    hasCapture = true;//has valid capture
+                    hasCapture=true;//has valid capture
                 }
             }
         }
 
         if(checkRightUpwards(y,x))
         {
-            if(colour.equalsIgnoreCase("b")&& board[y-1][x+1].equalsIgnoreCase("w"))
+            String startingpiece=board[y][x];
+            String capturePoint=board[y-1][x+1];
+            if((colour.equalsIgnoreCase("b")|| startingpiece.equals("W") )&& (!capturePoint.equalsIgnoreCase(startingpiece)
+                    && (!capturePoint.equals("*"))))
             {
-                if(colour.equalsIgnoreCase("b")&& board[y-2][x+2].equalsIgnoreCase("*"))
+                if(board[y-2][x+2].equalsIgnoreCase("*"))
                 {
                     hasCapture=true;//has valid capture
                 }
@@ -185,9 +191,12 @@ public class Board
         boolean hasCapture =false;
         if(checkLeftDownwards(y,x))//while target coordinates are in range
         {
-            if(colour.equals("w")&& board[y+1][x-1].equalsIgnoreCase("b"))//if there is piece to capture
+            String startingpiece=board[y][x];
+            String capturePoint=board[y+1][x-1];
+            if((colour.equalsIgnoreCase("w")|| startingpiece.equals("B") )&& (!capturePoint.equalsIgnoreCase(startingpiece)
+                    && (!capturePoint.equals("*"))))
             {
-                if(colour.equals("w")&& board[y+2][x-2].equalsIgnoreCase("*"))//and there is space after it
+                if(board[y+2][x-2].equalsIgnoreCase("*"))
                 {
                     hasCapture=true;//has valid capture
                 }
@@ -196,9 +205,12 @@ public class Board
 
         if(checkLeftUpwards(y,x))//while target coordinates are in range
         {
-            if(colour.equals("b")&& board[y-1][x-1].equalsIgnoreCase("w"))//if there is piece to capture
+            String startingpiece=board[y][x];
+            String capturePoint=board[y-1][x-1];
+            if((colour.equalsIgnoreCase("b")|| startingpiece.equals("W") )&& (!capturePoint.equalsIgnoreCase(startingpiece)
+                    && (!capturePoint.equals("*"))))
             {
-                if(colour.equals("b")&& board[y-2][x-2].equalsIgnoreCase("*"))//and there is space after it
+                if(board[y-2][x-2].equalsIgnoreCase("*"))
                 {
                     hasCapture=true;//has valid capture
                 }
