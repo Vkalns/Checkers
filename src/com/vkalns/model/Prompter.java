@@ -136,7 +136,8 @@ public class Prompter
                 System.out.println("Invalid coordinates");
                 horizontalInNr[0]=0;
         }
-        horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1));
+        horizontalInNr[0]--;
+        horizontalInNr[1] = Character.getNumericValue(coordinates.charAt(1))-1;
         return horizontalInNr;
     }
 
@@ -150,31 +151,31 @@ public class Prompter
         String opponentsColour="";
         if(playerColour=="w"){opponentsColour="b";}
         if(playerColour=="b"){opponentsColour="w";}
-        if(startingCoordinates[0]==0 ||(startingCoordinates[1]>8 || startingCoordinates[1]<1))
+        if(startingCoordinates[0]==-1 ||(startingCoordinates[1]>7 || startingCoordinates[1]<0))
         {
             System.out.println("Starting position is invalid");
             isValid =false;
         }
-        if(endCordinates[0]==0 ||(endCordinates[1]>8 || endCordinates[1]<1))
+        if(endCordinates[0]==-1 ||(endCordinates[1]>7 || endCordinates[1]<0))
         {
             System.out.println("End position is invalid");
             isValid =false;
         }
-        if(board.board[endCordinates[1]-1][endCordinates[0]-1]==" " ||
-                board.board[endCordinates[1]-1][endCordinates[0]-1].equalsIgnoreCase(playerColour)||
-                board.board[endCordinates[1]-1][endCordinates[0]-1].equalsIgnoreCase(opponentsColour))
+        if(board.board[endCordinates[1]][endCordinates[0]]==" " ||
+                board.board[endCordinates[1]][endCordinates[0]].equalsIgnoreCase(playerColour)||
+                board.board[endCordinates[1]][endCordinates[0]].equalsIgnoreCase(opponentsColour))
         {
             System.out.println("You can't move there");
             isValid =false;
         }
 
-        if(!board.board[startingCoordinates[1]-1][startingCoordinates[0]-1].equalsIgnoreCase(playerColour))
+        if(!board.board[startingCoordinates[1]][startingCoordinates[0]].equalsIgnoreCase(playerColour))
         {
             System.out.println("You don't have a piece there");
             isValid =false;
         }
-        if((!board.checkRightCapture(startingCoordinates[1]-1,startingCoordinates[0]-1,playerColour)&&
-                !board.checkLeftCapture(startingCoordinates[1]-1,startingCoordinates[0]-1,playerColour))&&
+        if((!board.checkRightCapture(startingCoordinates[1],startingCoordinates[0],playerColour)&&
+                !board.checkLeftCapture(startingCoordinates[1],startingCoordinates[0],playerColour))&&
                 (startingCoordinates[1]>=endCordinates[1]+2 || startingCoordinates[1]<=endCordinates[1]-2))
         {
             System.out.println("You can't jump unless you capture");

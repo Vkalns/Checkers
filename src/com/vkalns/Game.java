@@ -78,7 +78,7 @@ public class Game
             }
 
             String [] coordinates = prompter.askForMove(input.trim(),player1);//ask for move coordinates and validate them
-            System.out.println(Arrays.toString(coordinates));
+
             Move move = new Move(coordinates,board);
             MoveBundle moveBundle= new MoveBundle(move);
             player1.movesTaken.push(moveBundle);
@@ -105,6 +105,8 @@ public class Game
 //            player1.movesTaken.peek().addCapturedPiecePositions(player1.movesTaken.peek().getStartingPosNummeric(),
 //                    player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
 //            //this updates capturedPieces coordinates
+
+//            move.startOfTurnBoard.board=board.board;//taking copy of the board before updating it
 
             board.updateBoard(move,player1.getPieceColour(),false,false);
 
@@ -162,9 +164,23 @@ public class Game
         if (board.checkRightCapture(lastMove.getTargetPosNummeric()[0],lastMove.getTargetPosNummeric()[1],player1.getPieceColour())
                 || board.checkLeftCapture(lastMove.getTargetPosNummeric()[0],lastMove.getTargetPosNummeric()[1],player1.getPieceColour()))
         {
-            System.out.println(player1+" you can capture another piece please enter a end coordinate ");
+            System.out.println(player1.getName()+" you can capture another piece");
+            System.out.println("Please enter your next move starting and ending coordinates separated by comma");
             String [] coordinates = prompter.askForMove(scanner.nextLine(),player1);
-            prompter.isCoordinatesValid(lastMove.changeToNumbers(coordinates[0]),lastMove.changeToNumbers(coordinates[1]),player1.getPieceColour());
+            if((lastMove.getTargetPos().equalsIgnoreCase(coordinates[0]))&&
+                prompter.isCoordinatesValid(lastMove.changeToNumbers(coordinates[0]),lastMove.changeToNumbers(coordinates[1]),player1.getPieceColour()))
+            {
+                Move move = new Move(coordinates,board);
+                bundle.addMove(move);
+                move.addCapturedPiecePositions(move.getStartingPosNummeric(),move.getTargetPosNummeric(),player1.getPieceColour());
+                board.updateBoard(move,player1.getPieceColour(),false,false);
+                doAnotherCapture(bundle,board,player1,player2);
+            }
+            else
+                {
+                    System.out.println("Wrong coordinates");
+                    doAnotherCapture(bundle,board,player1,player2);
+                }
         }
 
     }
@@ -341,7 +357,7 @@ public class Game
                 }
                 else
                     {
-                        System.out.print(count+": "+firstMove.changeToLetters(firstMove.getStartingPosNummeric())+ " :");
+                        System.out.print(count+": "+firstMove.changeToLetters(firstMove.getStartingPosNummeric())+ " : ");
 
                         for (Move move : moveBundle.getAllMoves())
                         {
@@ -360,8 +376,13 @@ public class Game
                 System.out.println("List of moves made by "+player.getName()+ ":");
                 for (MoveBundle moveBundle : player.movesTaken)
                 {
-                    Move firstMove = moveBundle.getAllMoves().get(0);
-                    System.out.println(count+": "+ firstMove.getStartingPos()+ " to "+firstMove.getTargetPos());
+                    System.out.print(count);
+                    for (Move eachMove: moveBundle.getAllMoves())
+                    {
+                        System.out.print(": "+ eachMove.getStartingPos()+ " to "+eachMove.getTargetPos());
+                    }
+                    System.out.println();
+
                     count++;
                 }
             }
@@ -376,12 +397,20 @@ public class Game
             MoveBundle player1Bundle = player1.movesTaken.peek();
             for (Move move : player2Bundle.getAllMoves())
             {//for each move in the latest bundle
-                board.updateBoard(move,player2.getPieceColour(),true,false);
+                move.setStartOfTurnBoard();
+                board.board=move.copyBoard(move.startOfTurnBoard.board);
+                //board.board=move.startOfTurnBoard.board;
+//                board.updateBoard(move,player2.getPieceColour(),true,false);
             }
+            board.drawBoard();
             player2.movesUndo.push(player2.movesTaken.pop());
             for (Move move : player1Bundle.getAllMoves())
             {//for each move in the player1 latest bundle
-                board.updateBoard(move,player1.getPieceColour(),true,false);
+                move.setStartOfTurnBoard();
+                board.board=move.copyBoard(move.startOfTurnBoard.board);
+                //board.board=move.startOfTurnBoard.board;
+
+                //board.updateBoard(move,player1.getPieceColour(),true,false);
             }
             player1.movesUndo.push(player1.movesTaken.pop());
             board.drawBoard();

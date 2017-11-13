@@ -9,6 +9,7 @@ public class Move
 
 {
     Board board = new Board();
+    public Board startOfTurnBoard;
     String[] input;
     int [] startingPosNummeric;
     int [] targetPosNummeric;
@@ -153,6 +154,23 @@ public class Move
         return horizontalInLetter;
     }
 
+    public String[][] copyBoard(String[][] board)
+    {
+
+        String [][] copy = new String[8][8];
+        for(int i=0; i<board.length; i++)
+        {
+            for(int j=0; j<board[i].length; j++)
+            {
+                copy[i][j]=board[i][j];
+            }
+        }
+        return copy;
+    }
+
+    public void setStartOfTurnBoard() {
+        this.startOfTurnBoard.board= copyBoard(board.board);
+    }
 
     public void addCapturedPiecePositions(int[] startPosition, int[]targetPosition, String colour)
     {//TODO create similar move but for king
