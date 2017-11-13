@@ -63,11 +63,21 @@ public class Game
         if(!board.checkForCapture(player1.getPieceColour()).isEmpty())
         {
             System.out.println(player1.getName()+" you must capture a piece. Please enter your next move starting and ending coordinates separated by comma");
-            System.out.println("If you want to undo your last move please enter \"undo\"");
+            System.out.println("If you want to undo your and opponents last move please enter \"undo\"");
             System.out.println("If you want to redo your last undo please type \"redo\"");
             input = scanner.nextLine();
+            if (input.trim().equalsIgnoreCase("undo"))
+            {
+                undoMove(player1,player2);
+                doHumanMove(player1,player2);
+            }
+            else if (input.trim().equalsIgnoreCase("redo"))
+            {
+                redoMove(player1,player2);
+                doHumanMove(player1,player2);
+            }
 
-            String [] coordinates = prompter.askForMove(input,player1);//ask for move coordinates and validate them
+            String [] coordinates = prompter.askForMove(input.trim(),player1);//ask for move coordinates and validate them
             System.out.println(Arrays.toString(coordinates));
             Move move = new Move(coordinates,board);
             MoveBundle moveBundle= new MoveBundle(move);
@@ -162,7 +172,8 @@ public class Game
     public void doComputerMove(AI computer)
     {
         computer.setAllPossibleMoves(getAIMoves(computer,board));
-        System.out.println(computer.getAllPossibleMoves().size());
+        //computer finds all the possible moves(if it finds a capture it stops looking for other moves
+        System.out.println(computer.getName()+ " choosing between "+computer.getAllPossibleMoves().size()+" figures which can move");
         Random random = new Random();
         Move computerMove = computer.getAllPossibleMoves().get(random.nextInt(computer.getAllPossibleMoves().size()));
         computerMove.addCapturedPiecePositions(computerMove.getStartingPosNummeric(),computerMove.getTargetPosNummeric(),computer.getPieceColour());
@@ -200,17 +211,17 @@ public class Game
                     if (board.board[y][x].equalsIgnoreCase(computer.getPieceColour()))
                     {
                         if ((computer.getPieceColour().equalsIgnoreCase("b")||
-                                board.board[y][x].equals("W"))//if Ai plays with blacks
+                                board.board[y][x].equals("W"))//if Ai plays with blacks or with white KING
                                 && ((board.checkRightUpwards(y + 1, x - 1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y - 1][x + 1].equalsIgnoreCase("*")))
                         {
-                            int[] startingCoordinates = {y, x};
+                            int[] startingCoordinates = {y, x};//setting the move coordinates accordingly
                             int[] endCoordinates = {y - 1, x + 1};
                             AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                         }
                         else if ((computer.getPieceColour().equalsIgnoreCase("b")||
                                 board.board[y][x].equals("W"))
-                                //if Ai plays with blacks
+                                //if Ai plays with blacks or white KING
                                 && ((board.checkLeftUpwards(y + 1, x + 1))//this function checks yx coordinates are in range for captures that's why its edited
                                 && board.board[y - 1][x - 1].equalsIgnoreCase("*")))
                         {
@@ -259,7 +270,7 @@ public class Game
                         AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                     }
                     else if ((computer.getPieceColour().equalsIgnoreCase("b")||
-                            board.board[y][x].equals("W"))//if Ai plays with blacks
+                            board.board[y][x].equals("W"))//if Ai plays with blacks or white KING
                             && ((board.checkRightUpwards(y + 1, x - 1))//this function checks yx coordinates are in range for captures that's why its edited
                             && (board.board[y - 2][x + 2].equalsIgnoreCase("*"))))
                     {
@@ -267,10 +278,10 @@ public class Game
                         AiMoves.add(new Move(startingCoordinates, endCoordinates, board));
                     }
                 }
-                else if (board.checkLeftCapture(y,x,board.board[y][x]))//if capture is on left side)
+                else if (board.checkLeftCapture(y,x,board.board[y][x]))//if capture is on left side
                 {
                     if ((computer.getPieceColour().equalsIgnoreCase("w")||
-                            board.board[y][x].equals("B"))//if Ai plays with whites
+                            board.board[y][x].equals("B"))//if Ai plays with whites or black KING
                             && ((board.checkLeftDownwards(y-1, x+1))//this function checks yx coordinates are in range for captures that's why its edited
                             && board.board[y + 2][x - 2].equals("*")))
                     {
@@ -362,7 +373,7 @@ public class Game
         if(!player1.movesTaken.isEmpty())
         {//takes move off and puts it in another undo move stack
             MoveBundle player2Bundle = player2.movesTaken.peek();
-            MoveBundle player1Bundle = player2.movesTaken.peek();
+            MoveBundle player1Bundle = player1.movesTaken.peek();
             for (Move move : player2Bundle.getAllMoves())
             {//for each move in the latest bundle
                 board.updateBoard(move,player2.getPieceColour(),true,false);
@@ -373,6 +384,7 @@ public class Game
                 board.updateBoard(move,player1.getPieceColour(),true,false);
             }
             player1.movesUndo.push(player1.movesTaken.pop());
+            board.drawBoard();
         }
         else
             {
@@ -382,18 +394,17 @@ public class Game
 
     public void redoMove(Player player1, Player player2)
     {
-        //TODO: remove last element from movesUndo Stack
         if(!player1.movesUndo.isEmpty())
 
         {//takes move off and puts it in another undo move stack
-            MoveBundle player2Bundle = player2.movesUndo.peek();
-            MoveBundle player1Bundle = player2.movesUndo.peek();
-            for (Move move : player2Bundle.getAllMoves())
+            MoveBundle player2UndoBundle = player2.movesUndo.peek();
+            MoveBundle player1UndoBundle = player2.movesUndo.peek();
+            for (Move move : player2UndoBundle.getAllMoves())
             {//for each move in the latest bundle
                 board.updateBoard(move,player2.getPieceColour(),false,true);
             }
             player2.movesTaken.push(player2.movesUndo.pop());
-            for (Move move : player1Bundle.getAllMoves())
+            for (Move move : player1UndoBundle.getAllMoves())
             {//for each move in the player1 latest bundle
                 board.updateBoard(move,player1.getPieceColour(),false,true);
             }

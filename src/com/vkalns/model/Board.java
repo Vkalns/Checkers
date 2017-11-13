@@ -5,25 +5,25 @@ import java.util.ArrayList;
 public class Board
 {
 
-    public String [][] board  = {
-            {"w"," ","w"," ","w"," ","w"," "},
-            {" ","w"," ","w"," ","w"," ","w"},
-            {"w"," ","w"," ","w"," ","w"," "},
-            {" ","*"," ","*"," ","*"," ","*"},
-            {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","b"," ","b"},
-            {"b"," ","b"," ","b"," ","b"," "},
-            {" ","b"," ","b"," ","b"," ","b"}};
-
 //    public String [][] board  = {
-//            {"w"," ","w"," ","*"," ","*"," "},
-//            {" ","b"," ","*"," ","*"," ","*"},
-//            {"w"," ","*"," ","*"," ","*"," "},
+//            {"w"," ","w"," ","w"," ","w"," "},
+//            {" ","w"," ","w"," ","w"," ","w"},
+//            {"w"," ","w"," ","w"," ","w"," "},
 //            {" ","*"," ","*"," ","*"," ","*"},
 //            {"*"," ","*"," ","*"," ","*"," "},
-//            {" ","*"," ","*"," ","*"," ","*"},
-//            {"*"," ","*"," ","*"," ","b"," "},
-//            {" ","*"," ","*"," ","b"," ","*"}};
+//            {" ","b"," ","b"," ","b"," ","b"},
+//            {"b"," ","b"," ","b"," ","b"," "},
+//            {" ","b"," ","b"," ","b"," ","b"}};
+
+    public String [][] board  = {
+            {"w"," ","w"," ","*"," ","*"," "},
+            {" ","b"," ","*"," ","*"," ","*"},
+            {"w"," ","*"," ","*"," ","*"," "},
+            {" ","b"," ","*"," ","*"," ","*"},
+            {"*"," ","*"," ","*"," ","*"," "},
+            {" ","*"," ","*"," ","*"," ","*"},
+            {"*"," ","*"," ","*"," ","b"," "},
+            {" ","*"," ","*"," ","b"," ","*"}};
     //public ArrayList<Integer>
 
 
@@ -83,18 +83,20 @@ public class Board
         else //if we undo the move we swap the elements from w/b back to *
             {
                 String piece = board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]];
+
                 board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=piece;
 
                 board[move.getTargetPosNummeric()[0]][move.targetPosNummeric[1]]="*";
 
                 if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
                 {
+
                     for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
                     {
                         board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
                     }
                 }
-                drawBoard();
+                //drawBoard();
             }
     }
 
