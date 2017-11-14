@@ -2,6 +2,7 @@ package com.vkalns;
 
 import com.vkalns.model.*;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -58,26 +59,41 @@ public class Game
 
     public void doHumanMove(Player player1,Player player2)
     {
-
-//        System.out.println(board.checkForCapture("w"));
+        //checks if capture needs to be done
         if(!board.checkForCapture(player1.getPieceColour()).isEmpty())
         {
             System.out.println(player1.getName()+" you must capture a piece. Please enter your next move starting and ending coordinates separated by comma");
             System.out.println("If you want to undo your and opponents last move please enter \"undo\"");
             System.out.println("If you want to redo your last undo please type \"redo\"");
-            input = scanner.nextLine();
-            if (input.trim().equalsIgnoreCase("undo"))
+            String [] coordinates = new String[]{};
+            try
             {
-                undoMove(player1,player2);
-                doHumanMove(player1,player2);
-            }
-            else if (input.trim().equalsIgnoreCase("redo"))
-            {
-                redoMove(player1,player2);
-                doHumanMove(player1,player2);
-            }
+                input = scanner.nextLine();
+                if (input.trim().equalsIgnoreCase("undo"))
+                {
+                    undoMove(player1,player2);
+                    doHumanMove(player1,player2);
+                }
+                else if (input.trim().equalsIgnoreCase("redo"))
+                {
+                    redoMove(player1,player2);
+                    doHumanMove(player1,player2);
+                }
 
-            String [] coordinates = prompter.askForMove(input.trim(),player1);//ask for move coordinates and validate them
+                else
+                    {
+                        coordinates = prompter.askForMove(input.trim(),player1);//ask for move coordinates and validate them
+                    }
+
+
+            }
+            catch (Exception e)
+            {
+                //System.out.println("Something went wrong with your input");
+                //System.out.println("Error message: "+e.getMessage());
+                System.out.println(e.getMessage());
+                doHumanMove(player1,player2);
+            }
 
             Move move = new Move(coordinates,board);
             MoveBundle moveBundle= new MoveBundle(move);
@@ -88,30 +104,11 @@ public class Game
                 player1.movesTaken.pop();
                 doHumanMove(player1,player2);
             }
-
+            //adding positions for any pieces which got captured
             move.addCapturedPiecePositions(move.getStartingPosNummeric(),move.getTargetPosNummeric(),player1.getPieceColour());
-
-            //here I should check if there is still capture at the final coordinates.
-
-//            //System.out.println(board.checkForCapture(player.getPieceColour()));
-//            String[] captureMoveCoordinates = prompter.askForCaptureMove(board.checkForCapture(player1.getPieceColour()),player1);
-//            //we ask for valid coordinates
-//
-//            player1.movesTaken.push(new Move(captureMoveCoordinates,board));//when we get them we create the move and update screen
-//            System.out.println("Moving a piece from: " + player1.movesTaken.peek().getStartingPos() +
-//                    " to " + player1.movesTaken.peek().getTargetPos());
-//
-//            //TODO: need to get capture figure update method
-//            player1.movesTaken.peek().addCapturedPiecePositions(player1.movesTaken.peek().getStartingPosNummeric(),
-//                    player1.movesTaken.peek().getTargetPosNummeric(),player1.getPieceColour());
-//            //this updates capturedPieces coordinates
-
-//            move.startOfTurnBoard.board=board.board;//taking copy of the board before updating it
-
+            //then update board
             board.updateBoard(move,player1.getPieceColour(),false,false);
-
             doAnotherCapture(player1.movesTaken.peek(),board,player1,player2);
-
             displayMovesHistory(player1);
         }
 
@@ -124,7 +121,6 @@ public class Game
             if (input.equalsIgnoreCase("undo"))
             {
                 undoMove(player1,player2);
-                //undoMove(player1);
                 doHumanMove(player1,player2);
             }
             else if (input.equalsIgnoreCase("redo"))
@@ -139,15 +135,6 @@ public class Game
                 player1.movesTaken.push(new MoveBundle(move));//add new moveBundle
                 System.out.println("Moving a piece from: " + move.getStartingPos() +
                         " to " + move.getTargetPos());
-//                System.out.println(Arrays.toString(player1.movesTaken.peek().getStartingPosNummeric()));
-//                System.out.println(Arrays.toString(player1.movesTaken.peek().getTargetPosNummeric()));
-                //System.out.println(board.checkRightCapture(2,2,"w"));
-                //System.out.println(board.checkLeftCapture(2,2,"w"));
-//                    if (human.movesTaken.peek().getTargetPosNummeric()[1]==human.movesTaken.peek().getStartingPosNummeric()[1]+2)
-//                    {
-//                        human.movesTaken.peek().addCapturedPiecePositions(human.movesTaken.peek().getStartingPosNummeric(),
-//                                human.movesTaken.peek().getTargetPosNummeric(),human.getPieceColour());
-//                    }
                    //draws an updated position of the board when basic move is made
                 board.updateBoard(move,player1.getPieceColour(),false,false);
 
@@ -315,20 +302,6 @@ public class Game
                     }
                 }
             }
-
-//        else
-//            {
-//                int[] startingPos = {board.checkForCapture(computer.getPieceColour()).get(0),
-//                        board.checkForCapture(computer.getPieceColour()).get(1)};
-//                int[] endingPos;
-//                if(board.checkRightCapture(startingPos[0],startingPos[1],computer.getPieceColour()))
-//                {
-//                    if (board.checkRightUpwards(startingPos[0],startingPos[1]))
-//                    {
-//
-//                    }
-//                }
-//            }
         return AiMoves;
     }
 
@@ -356,18 +329,16 @@ public class Game
                     //we print out history as normal
                 }
                 else
-                    {
-                        System.out.print(count+": "+firstMove.changeToLetters(firstMove.getStartingPosNummeric())+ " : ");
-
+                    {//if the move has multiple captures
+                        //System.out.print(count+": "+firstMove.changeToLetters(firstMove.getStartingPosNummeric())+ " : ");
+                        System.out.print(count+": ");
                         for (Move move : moveBundle.getAllMoves())
                         {
-                            System.out.print(move.changeToLetters(move.getTargetPosNummeric())+ " : ");
+                            System.out.print(move.changeToLetters(move.getStartingPosNummeric())
+                                    +" : "+move.changeToLetters(move.getTargetPosNummeric())+ " ");
                         }
-
-
                     }
                 count++;
-
             }
         }
         else
@@ -401,8 +372,6 @@ public class Game
             {//for each move in the latest bundle
                 Move move = p2Moves.get(index);
                 board.board=move.copyBoard(move.startOfTurnBoard);
-                //board.board=move.startOfTurnBoard.board;
-//                board.updateBoard(move,player2.getPieceColour(),true,false);
             }
             System.out.println("Undoing "+player2.getName()+"'s last move");
             board.drawBoard();
@@ -413,9 +382,8 @@ public class Game
             {//for each move in the latest bundle
                 Move move = p1Moves.get(index);
                 board.board=move.copyBoard(move.startOfTurnBoard);
-                //board.board=move.startOfTurnBoard.board;
-//                board.updateBoard(move,player2.getPieceColour(),true,false);
             }
+
             System.out.println("Undoing "+player1.getName()+"'s last move");
             board.drawBoard();
             player1.movesUndo.push(player1.movesTaken.pop());
@@ -433,16 +401,28 @@ public class Game
 
         {//takes move off and puts it in another undo move stack
             MoveBundle player2UndoBundle = player2.movesUndo.peek();
-            MoveBundle player1UndoBundle = player2.movesUndo.peek();
-            for (Move move : player2UndoBundle.getAllMoves())
+            MoveBundle player1UndoBundle = player1.movesUndo.peek();
+            ArrayList<Move>p2UndoMoves = player2UndoBundle.getAllMoves();
+            System.out.println("Redo-ing "+player2.getName()+"'s last undo move");
+            for (int index=0;index<=p2UndoMoves.size()-1;index++)
             {//for each move in the latest bundle
-                board.updateBoard(move,player2.getPieceColour(),false,true);
+                Move move = p2UndoMoves.get(index);
+                board.updateBoard(move,player2.getPieceColour(),false,false);
             }
+
+            //board.drawBoard();
             player2.movesTaken.push(player2.movesUndo.pop());
-            for (Move move : player1UndoBundle.getAllMoves())
-            {//for each move in the player1 latest bundle
-                board.updateBoard(move,player1.getPieceColour(),false,true);
+
+            ArrayList<Move>p1UndoMoves = player1UndoBundle.getAllMoves();
+            System.out.println("Redo-ing "+player1.getName()+"'s last undo move");
+            for (int index=0;index<=p1UndoMoves.size()-1;index++)
+            {//for each move in the latest bundle
+                Move move = p1UndoMoves.get(index);
+                board.updateBoard(move,player1.getPieceColour(),false,false);
             }
+
+
+
             player1.movesTaken.push(player1.movesUndo.pop());
         }
 
