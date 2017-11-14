@@ -390,30 +390,36 @@ public class Game
 
     public void undoMove(Player player1, Player player2)
     {
-        //TODO: remove last element from movesTaken Stack
+
         if(!player1.movesTaken.isEmpty())
         {//takes move off and puts it in another undo move stack
             MoveBundle player2Bundle = player2.movesTaken.peek();
             MoveBundle player1Bundle = player1.movesTaken.peek();
-            for (Move move : player2Bundle.getAllMoves())
+
+            ArrayList<Move>p2Moves = player2Bundle.getAllMoves();
+            for (int index=p2Moves.size()-1;index>=0;index--)
             {//for each move in the latest bundle
-                move.setStartOfTurnBoard();
-                board.board=move.copyBoard(move.startOfTurnBoard.board);
+                Move move = p2Moves.get(index);
+                board.board=move.copyBoard(move.startOfTurnBoard);
                 //board.board=move.startOfTurnBoard.board;
 //                board.updateBoard(move,player2.getPieceColour(),true,false);
             }
+            System.out.println("Undoing "+player2.getName()+"'s last move");
             board.drawBoard();
             player2.movesUndo.push(player2.movesTaken.pop());
-            for (Move move : player1Bundle.getAllMoves())
-            {//for each move in the player1 latest bundle
-                move.setStartOfTurnBoard();
-                board.board=move.copyBoard(move.startOfTurnBoard.board);
-                //board.board=move.startOfTurnBoard.board;
 
-                //board.updateBoard(move,player1.getPieceColour(),true,false);
+            ArrayList<Move>p1Moves = player1Bundle.getAllMoves();
+            for (int index=p1Moves.size()-1;index>=0;index--)
+            {//for each move in the latest bundle
+                Move move = p1Moves.get(index);
+                board.board=move.copyBoard(move.startOfTurnBoard);
+                //board.board=move.startOfTurnBoard.board;
+//                board.updateBoard(move,player2.getPieceColour(),true,false);
             }
-            player1.movesUndo.push(player1.movesTaken.pop());
+            System.out.println("Undoing "+player1.getName()+"'s last move");
             board.drawBoard();
+            player1.movesUndo.push(player1.movesTaken.pop());
+
         }
         else
             {

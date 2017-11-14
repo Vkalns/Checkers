@@ -9,7 +9,7 @@ public class Move
 
 {
     Board board = new Board();
-    public Board startOfTurnBoard;
+    public String [] []startOfTurnBoard = new String[8][8];
     String[] input;
     int [] startingPosNummeric;
     int [] targetPosNummeric;
@@ -32,6 +32,7 @@ public class Move
         this.startingPosNummeric = startingPosNummeric;
         int targetPosNummeric[] = changeToNumbers(targetPos);
         this.targetPosNummeric = targetPosNummeric;
+        this.startOfTurnBoard = copyBoard(board.board);
     }
 
     public Move(int[]startCoordinates,int[]endCoordinates,Board board)
@@ -39,6 +40,8 @@ public class Move
         startingPosNummeric= startCoordinates;
         targetPosNummeric = endCoordinates;
         this.board = board;
+        this.startOfTurnBoard = copyBoard(board.board);
+
     }
 
     public Move(String[] input,ArrayList<Integer> capturedPiecesPositions,Board board)
@@ -169,7 +172,7 @@ public class Move
     }
 
     public void setStartOfTurnBoard() {
-        this.startOfTurnBoard.board= copyBoard(board.board);
+        this.startOfTurnBoard=copyBoard(board.board);
     }
 
     public void addCapturedPiecePositions(int[] startPosition, int[]targetPosition, String colour)
