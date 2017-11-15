@@ -19,4 +19,6 @@ public class MoveBundle
     {
         allMoves.add(move);
     }
+
+    public Move getLastMove(){return allMoves.get(allMoves.size()-1);}
 }

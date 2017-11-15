@@ -16,13 +16,13 @@ public class Board
 //            {" ","b"," ","b"," ","b"," ","b"}};
 
     public String [][] board  = {
-            {"w"," ","w"," ","*"," ","*"," "},
-            {" ","b"," ","*"," ","*"," ","*"},
             {"w"," ","*"," ","*"," ","*"," "},
             {" ","b"," ","*"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","*"," ","*"," ","*"," ","*"},
-            {"*"," ","*"," ","w"," ","b"," "},
+            {" ","b"," ","*"," ","b"," ","*"},
+            {"*"," ","*"," ","*"," ","*"," "},
+            {" ","b"," ","b"," ","*"," ","*"},
+            {"*"," ","*"," ","*"," ","b"," "},
             {" ","*"," ","*"," ","b"," ","*"}};
     //public ArrayList<Integer>
 
@@ -52,22 +52,22 @@ public class Board
         }
     }
 
-    public void updateBoard(Move move, String colour,boolean undo, boolean redo)
+    public void updateBoard(Move move, String colour,boolean undo, boolean redo,boolean printBoard)
             //String playerColour,int[]startingCoordinates,int[]endCoordinates,boolean undo
     {
         if(undo==false)
         {//if we moving players or AI piece we swap the array elements
-            String piece = board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]];
-            board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]="*";
+            String piece = board[move.getStartingPosNummeric()[1]][move.getStartingPosNummeric()[0]];
+            board[move.getStartingPosNummeric()[1]][move.getStartingPosNummeric()[0]]="*";
 
-            if (move.getTargetPosNummeric()[0]==0 && colour.equalsIgnoreCase("b") ||
-                    (move.getTargetPosNummeric()[0]==7 && colour.equalsIgnoreCase("w")))
+            if (move.getTargetPosNummeric()[1]==0 && colour.equalsIgnoreCase("b") ||
+                    (move.getTargetPosNummeric()[1]==7 && colour.equalsIgnoreCase("w")))
             {//if move ends at the other end of board then capitalise the piece(make it KING)
-                board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece.toUpperCase();
+                board[move.getTargetPosNummeric()[1]][move.getTargetPosNummeric()[0]]=piece.toUpperCase();
             }
             else
                 {
-                    board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece;
+                    board[move.getTargetPosNummeric()[1]][move.getTargetPosNummeric()[0]]=piece;
                 }
 
             if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
@@ -75,25 +75,26 @@ public class Board
                 //System.out.println(move.capturedPiecesPositions);
                 for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
                 {
-                    board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
+                    board[move.capturedPiecesPositions.get(i+1)][move.capturedPiecesPositions.get(i)]="*";
                 }
             }
-            drawBoard();
+            if(printBoard){drawBoard();}
+
         }
         else //if we undo the move we swap the elements from w/b back to *
             {
-                String piece = board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]];
+                String piece = board[move.getTargetPosNummeric()[1]][move.getTargetPosNummeric()[0]];
 
-                board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=piece;
+                board[move.getStartingPosNummeric()[1]][move.getStartingPosNummeric()[0]]=piece;
 
-                board[move.getTargetPosNummeric()[0]][move.targetPosNummeric[1]]="*";
+                board[move.getTargetPosNummeric()[1]][move.targetPosNummeric[0]]="*";
 
                 if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
                 {
 
                     for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
                     {
-                        board[move.capturedPiecesPositions.get(i)][move.capturedPiecesPositions.get(i+1)]="*";
+                        board[move.capturedPiecesPositions.get(i+1)][move.capturedPiecesPositions.get(i)]="*";
                     }
                 }
                 //drawBoard();
@@ -251,10 +252,10 @@ public class Board
     public boolean isCaptureMove(int[]startingCoordinates,String colour)
     {
         boolean isCapture=false;
-        if(board[startingCoordinates[0]][startingCoordinates[1]].equalsIgnoreCase(colour))
+        if(board[startingCoordinates[1]][startingCoordinates[0]].equalsIgnoreCase(colour))
         {
-            if(checkRightCapture(startingCoordinates[0],startingCoordinates[1],colour)||
-                    checkLeftCapture(startingCoordinates[0],startingCoordinates[1],colour))
+            if(checkRightCapture(startingCoordinates[1],startingCoordinates[0],colour)||
+                    checkLeftCapture(startingCoordinates[1],startingCoordinates[0],colour))
             {
                 isCapture=true;
             }
