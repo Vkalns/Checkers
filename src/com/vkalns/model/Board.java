@@ -5,25 +5,25 @@ import java.util.ArrayList;
 public class Board
 {
 
-//    public String [][] board  = {
-//            {"w"," ","w"," ","w"," ","w"," "},
-//            {" ","w"," ","w"," ","w"," ","w"},
-//            {"w"," ","w"," ","w"," ","w"," "},
-//            {" ","*"," ","*"," ","*"," ","*"},
-//            {"*"," ","*"," ","*"," ","*"," "},
-//            {" ","b"," ","b"," ","b"," ","b"},
-//            {"b"," ","b"," ","b"," ","b"," "},
-//            {" ","b"," ","b"," ","b"," ","b"}};
-
     public String [][] board  = {
-            {"w"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","*"," ","*"," ","*"},
+            {"w"," ","w"," ","w"," ","w"," "},
+            {" ","w"," ","w"," ","w"," ","w"},
+            {"w"," ","w"," ","w"," ","w"," "},
+            {" ","*"," ","*"," ","*"," ","*"},
             {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","*"," ","b"," ","*"},
-            {"*"," ","*"," ","*"," ","*"," "},
-            {" ","b"," ","b"," ","*"," ","*"},
-            {"*"," ","*"," ","*"," ","b"," "},
-            {" ","*"," ","*"," ","b"," ","*"}};
+            {" ","b"," ","b"," ","b"," ","b"},
+            {"b"," ","b"," ","b"," ","b"," "},
+            {" ","b"," ","b"," ","b"," ","b"}};
+
+//    public String [][] board  = {
+//            {"*"," ","w"," ","*"," ","*"," "},
+//            {" ","b"," ","*"," ","*"," ","*"},
+//            {"*"," ","*"," ","*"," ","*"," "},
+//            {" ","b"," ","*"," ","b"," ","*"},
+//            {"*"," ","*"," ","*"," ","*"," "},
+//            {" ","b"," ","b"," ","*"," ","*"},
+//            {"*"," ","*"," ","*"," ","b"," "},
+//            {" ","*"," ","*"," ","*"," ","*"}};
     //public ArrayList<Integer>
 
 
@@ -99,6 +99,54 @@ public class Board
                 }
                 //drawBoard();
             }
+    }
+    public void updateAIBoard(Move move, String colour,boolean undo, boolean redo,boolean printBoard)
+    //String playerColour,int[]startingCoordinates,int[]endCoordinates,boolean undo
+    {
+        if(undo==false)
+        {//if we moving players or AI piece we swap the array elements
+            String piece = board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]];
+            board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]="*";
+
+            if (move.getTargetPosNummeric()[0]==0 && colour.equalsIgnoreCase("b") ||
+                    (move.getTargetPosNummeric()[0]==7 && colour.equalsIgnoreCase("w")))
+            {//if move ends at the other end of board then capitalise the piece(make it KING)
+                board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece.toUpperCase();
+            }
+            else
+            {
+                board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]]=piece;
+            }
+
+            if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
+            {
+                //System.out.println(move.capturedPiecesPositions);
+                for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
+                {
+                    board[move.capturedPiecesPositions.get(i+1)][move.capturedPiecesPositions.get(i)]="*";
+                }
+            }
+            if(printBoard){drawBoard();}
+
+        }
+        else //if we undo the move we swap the elements from w/b back to *
+        {
+            String piece = board[move.getTargetPosNummeric()[0]][move.getTargetPosNummeric()[1]];
+
+            board[move.getStartingPosNummeric()[0]][move.getStartingPosNummeric()[1]]=piece;
+
+            board[move.getTargetPosNummeric()[0]][move.targetPosNummeric[1]]="*";
+
+            if(!move.capturedPiecesPositions.isEmpty())//if move contains captured pieces
+            {
+
+                for(int i=0;i<move.capturedPiecesPositions.size()-1;i=i+2)
+                {
+                    board[move.capturedPiecesPositions.get(i+1)][move.capturedPiecesPositions.get(i)]="*";
+                }
+            }
+            //drawBoard();
+        }
     }
 
     public int checkPieceCount(String colour)
