@@ -23,10 +23,11 @@ public class Prompter
 
     public void choseGameType()//method to choose what game type to start
     {
-        System.out.println("Please choose your game type by entering number of the following choices");
+        System.out.println("Please choose your game type by entering number of the following choices or leave application entering 4");
         System.out.println("1: Player against player");
         System.out.println("2: Player against Ai");
         System.out.println("3: Watch how computer plays against himself");
+        System.out.println("4: Exit");
 
         //asking what game type user want to play
         try
@@ -60,6 +61,11 @@ public class Prompter
             {
                 Game checkers = new Game();
                 checkers.startAiVsAi();
+            }
+            else if (gameChoice==4)
+            {
+                System.out.println("Thanks for playing. Goodbye!");
+                System.exit(0);
             }
         }
         catch (Exception e)

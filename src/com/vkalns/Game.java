@@ -34,7 +34,7 @@ public class Game
             {
                 System.out.println("Something went wrong with Thread.sleep "+e.getMessage());
             }
-            doComputerMove(computer);
+            doComputerMove(computer,human);
         }
     }
 
@@ -58,8 +58,8 @@ public class Game
         AI computer2 = new AI("Blacks","b");
         while(board.checkPieceCount(computer1.getPieceColour())>0&&(board.checkPieceCount(computer2.getPieceColour())>0))//Keep playing while you have pieces on board
         {
-            doComputerMove(computer1);
-            doComputerMove(computer2);
+            doComputerMove(computer1,computer2);
+            doComputerMove(computer2,computer1);
         }
 
     }
@@ -146,6 +146,12 @@ public class Game
             }
             displayMovesHistory(player1);
 
+            if(board.checkPieceCount(player2.getPieceColour())==0)
+            {
+                System.out.println("CONGRATULATIONS! "+ player1.getName().toUpperCase());
+                System.out.println("You have won the game");
+                prompter.choseGameType();
+            }
         }
     }
 
@@ -177,9 +183,22 @@ public class Game
 
     }
 
-    public void doComputerMove(AI computer)
+    public void doComputerMove(AI computer,Player opponent)
     {
         computer.setAllPossibleMoves(getAIMoves(computer,board));
+        if(computer.getAllPossibleMoves().size()==0)
+        {
+            System.out.println("CONGRATULATIONS! "+ opponent.getName().toUpperCase());
+            System.out.println("You have won the game");
+            try
+            {Thread.sleep(10000);}
+            catch (Exception e)
+            {
+                System.out.println("Something went wrong with Thread.sleep"+ e.getMessage());
+            }
+            prompter.choseGameType();
+
+        }
         //computer finds all the possible moves(if it finds a capture it stops looking for other moves
         System.out.println(computer.getName()+ " choosing between "+computer.getAllPossibleMoves().size()+" figures which can move");
         Random random = new Random();
@@ -207,6 +226,22 @@ public class Game
             }
             displayMovesHistory(computer);
             Thread.sleep(1000);
+            if(board.checkPieceCount(opponent.getPieceColour())==0)
+            {
+                System.out.println("CONGRATULATIONS! "+ computer.getName().toUpperCase());
+                System.out.println("You have WON the game because "+opponent.getName()+" has nowhere to go" );
+                Thread.sleep(10000);
+                prompter.choseGameType();
+            }
+            if(board.checkPieceCount(computer.getPieceColour())==board.checkPieceCount(opponent.getPieceColour())&&
+                    board.checkPieceCount(computer.getPieceColour())==1)
+            {
+                System.out.println("Game has reach DRAW as both players has only one piece left! ");
+                System.out.println("You will be redirected back to game choice menu");
+                Thread.sleep(5000);
+                prompter.choseGameType();
+            }
+
 
         }
 
