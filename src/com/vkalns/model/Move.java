@@ -176,102 +176,51 @@ public class Move
     }
 
     public void addCapturedPiecePositions(int[] startPosition, int[]targetPosition, String colour)
-{
-    if(targetPosition[1]==startPosition[1]+2)//if player go ahead by two on y axis
     {
-        if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
+        if(targetPosition[1]==startPosition[1]+2)//if player go ahead by two on y axis
         {
-            jumpPosition[0]=startPosition[0]+1;
-            jumpPosition[1]=startPosition[1]+1;
-            if(hasPieceToCapture(jumpPosition,colour))
+            if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
             {
-                capturedPiecesPositions.add(jumpPosition[0]);
-                capturedPiecesPositions.add(jumpPosition[1]);
-            }
-        }
-        else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
-        {
-            jumpPosition[0]=startPosition[0]-1;
-            jumpPosition[1]=startPosition[1]+1;
-            if(hasPieceToCapture(jumpPosition,colour))
-            {
-                capturedPiecesPositions.add(jumpPosition[0]);
-                capturedPiecesPositions.add(jumpPosition[1]);
-            }
-        }
-    }
-
-    if(targetPosition[1]==startPosition[1]-2)//if player go back by two on y axis
-    {
-        if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
-        {
-            jumpPosition[0]=startPosition[0]+1;
-            jumpPosition[1]=startPosition[1]-1;
-            if(hasPieceToCapture(jumpPosition,colour))
-            {
-                capturedPiecesPositions.add(jumpPosition[0]);
-                capturedPiecesPositions.add(jumpPosition[1]);
-            }
-        }
-        else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
-        {
-            jumpPosition[0]=startPosition[0]-1;
-            jumpPosition[1]=startPosition[1]-1;
-            if(hasPieceToCapture(jumpPosition,colour))
-            {
-                capturedPiecesPositions.add(jumpPosition[0]);
-                capturedPiecesPositions.add(jumpPosition[1]);
-            }
-        }
-    }
-}
-
-    public void addAICapturedPiecePositions(int[] startPosition, int[]targetPosition, String colour)
-    {
-        if(targetPosition[0]==startPosition[0]+2)//if player go ahead by two on y axis
-        {
-            if(targetPosition[1]>startPosition[1])//target is on the left from player point(right from our display point)
-            {
-                jumpPosition[0]=startPosition[1]+1;
-                jumpPosition[1]=startPosition[0]+1;
+                jumpPosition[0]=startPosition[0]+1;
+                jumpPosition[1]=startPosition[1]+1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    capturedPiecesPositions.add(jumpPosition[1]);
                     capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
                 }
             }
-            else if (targetPosition[1]<startPosition[1])//target is on the right from player point(left from our display point)
+            else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
             {
-                jumpPosition[0]=startPosition[1]-1;
-                jumpPosition[1]=startPosition[0]+1;
+                jumpPosition[0]=startPosition[0]-1;
+                jumpPosition[1]=startPosition[1]+1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    capturedPiecesPositions.add(jumpPosition[1]);
                     capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
                 }
             }
         }
 
-        if(targetPosition[0]==startPosition[0]-2)//if player go back by two on y axis
+        if(targetPosition[1]==startPosition[1]-2)//if player go back by two on y axis
         {
-            if(targetPosition[1]>startPosition[1])//target is on the left from player point(right from our display point)
+            if(targetPosition[0]>startPosition[0])//target is on the left from player point(right from our display point)
             {
-                jumpPosition[0]=startPosition[1]+1;
-                jumpPosition[1]=startPosition[0]-1;
+                jumpPosition[0]=startPosition[0]+1;
+                jumpPosition[1]=startPosition[1]-1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    capturedPiecesPositions.add(jumpPosition[1]);
                     capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
                 }
             }
-            else if (targetPosition[1]<startPosition[1])//target is on the right from player point(left from our display point)
+            else if (targetPosition[0]<startPosition[0])//target is on the right from player point(left from our display point)
             {
-                jumpPosition[0]=startPosition[1]-1;
-                jumpPosition[1]=startPosition[0]-1;
+                jumpPosition[0]=startPosition[0]-1;
+                jumpPosition[1]=startPosition[1]-1;
                 if(hasPieceToCapture(jumpPosition,colour))
                 {
-                    capturedPiecesPositions.add(jumpPosition[1]);
                     capturedPiecesPositions.add(jumpPosition[0]);
+                    capturedPiecesPositions.add(jumpPosition[1]);
                 }
             }
         }
@@ -292,11 +241,4 @@ public class Move
         }
         return hasPiece;
     }
-
-//    public void CapturePiece(String coordinates)
-//    {//this takes off the opponents piece from the board at provided coordinate
-//        int[] coordinate = changeToNumbers(coordinates);
-//        board.board[coordinate[1]-1][coordinate[0]-1]="*";
-//    }
-
 }

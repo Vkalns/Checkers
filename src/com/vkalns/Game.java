@@ -27,6 +27,13 @@ public class Game
         while(board.checkPieceCount(human.getPieceColour())>0)//Keep playing while you have pieces on board
         {
             doHumanMove(human,computer);
+            try {
+                Thread.sleep(2000);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Something went wrong with Thread.sleep "+e.getMessage());
+            }
             doComputerMove(computer);
         }
     }

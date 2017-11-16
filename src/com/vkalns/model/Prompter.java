@@ -146,10 +146,6 @@ public class Prompter
     public boolean isCoordinatesValid(int []startingCoordinates,int[]endCordinates,String playerColour)
     {//this checks if coordinates are in range
         boolean isValid=true;
-        int startX = startingCoordinates[0];
-        int startY = startingCoordinates[1];
-        int endX = endCordinates[0];
-        int endY = endCordinates[1];
         //int[] startingCoordinates = changeToNumbers(coordinates[0]);
         //int[] endPos = changeToNumbers(coordinates[1]);
         String opponentsColour="";
